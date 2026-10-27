@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ШІ-агенти в автоматизації — майстер-клас</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="deck" id="deck">
+
+<!-- Титул: поки збираються слухачі, по кільцю на зображенні біжить світло — крутиться цикл агента, а теми підсвічуються по черзі.
+     SVG має ту саму систему координат, що й зображення 1254×1254, і кадрується так само (cover по центру) -->
+<section class="slide s-title" id="s-title">
+  <div class="hero intro" style="--d:.1s">
+    <div class="hero-frame">
+      <img src="images/title-agents.png" alt="">
+      <svg class="loop-fx" viewBox="0 0 1254 1254" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g transform="rotate(-3.6 846 427)">
+          <path class="comet-glow" pathLength="100" d="M723 427 a123 56 0 1 1 246 0 a123 56 0 1 1 -246 0"/>
+          <path class="comet" pathLength="100" d="M723 427 a123 56 0 1 1 246 0 a123 56 0 1 1 -246 0"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="body">
+    <div class="label intro" style="--d:.2s">Майстер-клас</div>
+    <h1 class="intro" style="--d:.35s">ШІ-агенти в автоматизації:<span>від питання до перевіреного результату</span></h1>
+    <div class="topics intro" style="--d:.6s">
+      <div style="--i:0">Що таке ШІ: від регресії до агентів</div>
+      <div style="--i:1">Агентні середовища</div>
+      <div style="--i:2">Пастка амнезії Гелл-Манна</div>
+      <div style="--i:3">Практика: дослідження з агентом</div>
+    </div>
+    <div class="rule intro" style="--d:.8s"></div>
+    <div class="author intro" style="--d:.95s">
+      <img src="images/author-portrait.png" alt="">
+      <div>
+        <b>Сергій Мірошниченко</b>
+        <p>старший викладач і аспірант кафедри автоматизації,<br>електро- та робототехнічних систем<br>ТОВ «Технічний університет «Метінвест Політехніка»», 2026</p>
+      </div>
+    </div>
+  </div>
+  <div class="logo-box intro" style="--d:1.1s"><img src="images/logo-mip.svg" alt="Метінвест Політехніка"></div>
+</section>
+
+<!-- Питання для обговорення -->
+<section class="slide" id="s-question">
+  <div class="bg ken" style="--shade: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, .94) 36%, rgba(255, 255, 255, 0) 62%);"><img src="images/warmup.png" alt=""></div>
+  <div class="label">Питання для обговорення</div>
+  <div class="question words" style="max-width:840px; font-size:68px;">Чи буде в майбутньому якась професія, сфера діяльності людини, яка не буде автоматизована?</div>
+  <img class="logo boxed" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Виступ Sohl-Dickstein: разом із головною думкою малюється експонента поруч із лінійним продовженням -->
+<section class="slide" id="s-sd">
+  <div class="label">Що кажуть дослідники ШІ</div>
+  <div class="title">Jascha Sohl-Dickstein, Anthropic</div>
+  <div class="rule"></div>
+  <div class="split">
+    <div>
+      <div class="lead" style="font-size:32px;">ICLR 2026 · воркшоп про науку й суспільство після AGI<br><span class="muted">«Advice for a young investigator in the first and last days of the Anthropocene»</span></div>
+      <div class="quote" data-step="1" style="margin-top:70px;">Майбутнє не буде лінійним продовженням теперішнього. Рішення про кар'єру й проєкти варто ухвалювати з урахуванням цього»</div>
+    </div>
+    <svg class="linexp" viewBox="0 0 640 540">
+      <line class="ax" x1="40" y1="480" x2="625" y2="480"/>
+      <line class="ax" x1="40" y1="480" x2="40" y2="20"/>
+      <line class="now" x1="270" y1="30" x2="270" y2="480"/>
+      <text class="lbl-now" x="270" y="516" text-anchor="middle">сьогодні</text>
+      <path class="past"/>
+      <g class="fut" data-step="1" data-anim="fade">
+        <path class="lin"/>
+        <path class="exp"/>
+        <line class="lin" x1="62" y1="52" x2="122" y2="52"/>
+        <text class="lg" x="136" y="60">лінійне продовження</text>
+        <line class="exp-l" x1="62" y1="96" x2="122" y2="96"/>
+        <text class="lg e" x="136" y="104">експонента</text>
+      </g>
+    </svg>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Швидкість: чотири цифри й «лінійка закінчилася» -->
+<section class="slide" id="s-speed">
+  <div class="label">Швидкість</div>
+  <div class="title">Як швидко розвивається ШІ</div>
+  <div class="rule"></div>
+  <div class="grid4">
+    <div class="card" data-step="1"><svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><div class="big">×<span data-count="4.7" data-from="1" data-dec="1">4,7</span></div><p>на рік зростають обчислення на навчання найбільших моделей — ≈10<sup>7</sup> разів за десятиліття</p></div>
+    <div class="card" data-step="2"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><div class="big mid">2 → <span data-count="12" data-from="2">12</span> год</div><p>за пів року: довжина програмістських задач (за часом фахівця), які модель виконує в половині спроб — METR</p></div>
+    <div class="card" data-step="3"><svg class="ico" viewBox="0 0 24 24"><path d="M2 9.5L12 4.5l10 5-10 5z"/><path d="M6 11.5v5c3.5 2.5 8.5 2.5 12 0v-5"/><path d="M22 9.5v6"/></svg><div class="big"><span data-count="1.5" data-dec="1">1,5</span> року</div><p>на питаннях рівня PhD: від вгадування до рівня, вищого за експертів</p></div>
+    <div class="card" data-step="4"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="M8.5 3l2.5 6.3M15.5 3L13 9.3"/><path d="M12 12.3l.85 1.75 1.9.27-1.38 1.34.33 1.9L12 16.65l-1.7.9.33-1.9-1.38-1.34 1.9-.27z"/></svg><div class="big"><span data-count="2025" data-from="2015">2025</span></div><p>«золото» на Міжнародній математичній олімпіаді</p></div>
+  </div>
+  <div class="callout" data-step="5" style="margin-top:40px;"><b>Лінійка закінчилася.</b> З травня 2026 METR вважає виміри понад 16 годин ненадійними на своєму наборі задач, а з 8 вересня сторінку з графіком більше не оновлює.</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Як виглядає ×4,7 щороку: ← → перемикають лінійну й логарифмічну шкалу тих самих даних -->
+<section class="slide" id="s-growth" data-fx="1">
+  <div class="label">Швидкість</div>
+  <div class="title">Як виглядає ×4,7 щороку</div>
+  <div class="rule"></div>
+  <div class="growth" data-step="1" data-anim="fade">
+    <div class="mode">Лінійна шкала · 2015 = 1</div>
+    <svg viewBox="0 0 1700 540"></svg>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Коли: прогнози на часовій шкалі -->
+<section class="slide" id="s-when">
+  <div class="label">Прогнози</div>
+  <div class="title">Коли</div>
+  <div class="rule"></div>
+  <div class="grid2">
+    <div class="card" data-step="1"><div class="big">1–5 років</div><p>до AGI — консенсус лабораторій Сан-Франциско. «Довгі» прогнози там — 10–30 років</p></div>
+    <div class="card" data-step="2"><div class="big">−<span data-count="13">13</span> років</div><p>на стільки експерти за один рік наблизили свій прогноз</p></div>
+  </div>
+  <svg class="timeline" viewBox="0 0 1700 230">
+    <line class="axis" x1="40" y1="170" x2="1660" y2="170"/>
+    <g class="ticks">
+      <line x1="40" y1="160" x2="40" y2="180"/><text x="40" y="214">2026</text>
+      <line x1="220" y1="160" x2="220" y2="180"/><text x="220" y="214">2030</text>
+      <line x1="445" y1="160" x2="445" y2="180"/><text x="445" y="214">2035</text>
+      <line x1="670" y1="160" x2="670" y2="180"/><text x="670" y="214">2040</text>
+      <line x1="895" y1="160" x2="895" y2="180"/><text x="895" y="214">2045</text>
+      <line x1="1120" y1="160" x2="1120" y2="180"/><text x="1120" y="214">2050</text>
+      <line x1="1345" y1="160" x2="1345" y2="180"/><text x="1345" y="214">2055</text>
+      <line x1="1570" y1="160" x2="1570" y2="180"/><text x="1570" y="214">2060</text>
+    </g>
+    <g data-step="1" data-anim="fade">
+      <rect class="band band-a" x="85" y="122" width="180" height="30" rx="6"/>
+      <text class="bt" x="85" y="106">1–5 років: лабораторії</text>
+      <rect class="band band-b" x="490" y="122" width="900" height="30" rx="6"/>
+      <text class="bt" x="490" y="106">10–30 років: «довгі» прогнози</text>
+    </g>
+    <g data-step="2" data-anim="fade">
+      <circle class="old" cx="1570" cy="56" r="11"/>
+      <text class="st" x="1660" y="24" text-anchor="end">опитування 2022 року: 2060</text>
+      <path class="arrow" d="M1552 56 L1012 56"/>
+      <polygon class="head" points="1000,56 1020,44 1020,68"/>
+      <circle class="new" cx="985" cy="56" r="11"/>
+      <text class="st n" x="985" y="24" text-anchor="middle">опитування 2023 року: 2047</text>
+    </g>
+  </svg>
+  <div class="quote" data-step="3" style="margin-top:36px; font-size:40px;">Поточна модель — обізнаний, але часом нерозважливий аспірант»</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Що радить робити: наприкінці — графік «характерного часу експоненти»; ← → пересувають час очікування -->
+<section class="slide" id="s-advice" data-fx="2">
+  <div class="label">Поради науковцям</div>
+  <div class="title">Що радить робити</div>
+  <div class="rule"></div>
+  <div class="split adv">
+    <ul class="bars compact">
+      <li data-step="1">Швидкі, цільові проєкти — коротші за характерний час експоненти</li>
+      <li data-step="2"><img class="avatar" src="images/sutton.jpg" alt="">«Гіркий урок» Саттона: брати задачі, що виграють від масштабу, і уникати тих, які масштаб розв'яже сам</li>
+      <li data-step="3">Опановувати нові інструменти, навіть незручні. Сам доповідач веде аналіз у Claude Code</li>
+      <li data-step="4">Ставити задачу моделі — та сама навичка, що й керувати аспірантом</li>
+      <li data-step="5">«Безпечний» кар'єрний вибір насправді не безпечний</li>
+    </ul>
+    <div class="expbox" data-step="6" data-anim="right">
+      <h4>Характерний час експоненти</h4>
+      <p>Довжина задач, які виконує модель, подвоюється приблизно кожні 3 місяці (METR, з 2024 року)</p>
+      <svg class="exp" viewBox="0 0 760 500"></svg>
+    </div>
+  </div>
+  <div class="credit" data-step="2" style="left:170px; bottom:38px;">Фото Р. Саттона: Steve Jurvetson, CC BY 2.0, Wikimedia Commons</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Відповідь на питання із залу -->
+<section class="slide" id="s-qa">
+  <div class="bg" data-step="2" data-anim="fade" style="left:auto; width:720px; --shade: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 26%);"><img src="images/train-dlr.jpg" alt="" style="object-position:62% 50%;"></div>
+  <div class="label">Питання із залу</div>
+  <div class="title">Чи все зможуть моделі?</div>
+  <div class="rule" style="width:1060px;"></div>
+  <ul class="bars" style="width:1060px;">
+    <li data-step="1">Моделі наближаються до здатності виконати будь-яку інтелектуальну задачу людини</li>
+    <li data-step="2">Що з цим робити — питання суспільне, а не технічне. Машиністів тримають, хоча потяги вміють водити автоматично з 1980-х</li>
+    <li data-step="3">Скептикам: перетворіть свою тезу на вимірюваний тест — і відстежуйте його</li>
+  </ul>
+  <div class="credit on-photo" data-step="2" data-anim="fade" style="top:auto; bottom:110px;">Docklands Light Railway, Лондон. Фото: mattbuck, CC BY-SA 3.0, Wikimedia Commons</div>
+  <img class="logo boxed" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Роль людини: людина ставить задачу й перевіряє, ШІ виконує між ними, а відповідальність за результат охоплює все, зокрема роботу ШІ -->
+<section class="slide" id="s-human">
+  <div class="bg" style="left:auto; width:760px; --shade: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 24%);"><img src="images/human-check.png" alt="" style="object-position:46% 50%;"></div>
+  <div class="label">Роль людини зараз</div>
+  <div class="title">Що лишається за людиною</div>
+  <div class="rule" style="width:980px;"></div>
+  <div class="hr">
+    <div class="hr-row">
+      <div class="hr-card" data-step="1"><span class="hr-tag">Людина</span><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><b>Ставити задачу</b><span>чітко й посильного обсягу</span></div>
+      <i class="hr-arr" data-step="2" data-anim="fade"></i>
+      <div class="hr-card ai" data-step="2"><span class="hr-tag">ШІ</span><span class="hr-loop"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span><b>Виконувати</b><span>код, розрахунки, графіки</span></div>
+      <i class="hr-arr" data-step="3" data-anim="fade"></i>
+      <div class="hr-card" data-step="3"><span class="hr-tag">Людина</span><svg class="ico" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/><path d="M7.8 10.6l1.9 1.9 3.4-3.6"/></svg><b>Перевіряти</b><span>модель може впевнено помилитися</span></div>
+    </div>
+    <svg class="hr-brace" data-step="4" data-anim="fade" viewBox="0 0 980 46" aria-hidden="true"><path pathLength="100" d="M145 2 V22 H835 V2 M490 2 V22 M490 22 V44"/></svg>
+    <div class="hr-resp" data-step="4"><svg class="ico" viewBox="0 0 24 24"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M13.5 6.5l3 3"/><path d="M14 20h6"/></svg><div><span class="hr-tag">Людина</span><b>Відповідати за результат</b><span>за все, і за роботу ШІ: висновок підписує людина, а не модель</span></div></div>
+  </div>
+  <div class="callout big" data-step="5" style="width:980px; margin-top:44px;">Саме це покажемо на практиці.</div>
+  <img class="logo boxed" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Що таке ШІ: вкладені рівні від символьного ШІ до LLM, агент — система довкола LLM -->
+<section class="slide" id="s-ai">
+  <div class="label">Що таке ШІ</div>
+  <div class="title">Від регресії до агентів</div>
+  <div class="rule" style="margin-bottom:34px;"></div>
+  <div class="ai-map">
+    <div class="ai-box ai-ai">
+      <div class="nm">Штучний інтелект</div>
+      <div class="ai-box ai-sym" data-step="1">
+        <div class="nm">Символьний ШІ</div>
+        <div class="ds">Правила, експертні системи, нечітка логіка, пошук і планування</div>
+        <div class="ai-tag" data-step="6" data-anim="zoom">АСУТП: нечіткі регулятори</div>
+      </div>
+      <div class="ai-box ai-ml" data-step="2">
+        <div class="nm">Машинне навчання</div>
+        <div class="ai-tag" data-step="7" data-anim="zoom">АСУТП: віртуальні датчики, аномалії</div>
+        <div class="ds">Модель сама підбирає коефіцієнти за даними: регресія, дерева рішень, кластеризація</div>
+        <div class="ai-box ai-dl" data-step="3">
+          <div class="nm">Глибоке навчання</div>
+          <div class="ds">Багатошарові нейромережі</div>
+          <div class="ai-box ai-llm" data-step="4">
+            <div class="nm">Великі мовні моделі (LLM)</div>
+            <div class="ds">Мільярди коефіцієнтів; модель передбачає наступний фрагмент тексту</div>
+            <div class="ai-tag" data-step="8" data-anim="zoom">АСУТП: код і звіти</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-arrow" data-step="5" data-anim="fade"></div>
+    <div class="ai-agent" data-step="5" data-anim="right">
+      <div class="nm">Агент</div>
+      <div class="ds">Не новий тип моделі, а система довкола LLM: модель + інструменти (файли, термінал, браузер) + цикл «план → дія → результат → виправлення»</div>
+      <div class="ai-tag" data-step="9" data-anim="zoom">АСУТП: архівні дані</div>
+    </div>
+    <div class="callout" data-step="10" style="position:absolute; left:1210px; top:500px; width:490px; font-size:24px; padding:24px 30px;">У демо — усі рівні разом: агент на LLM пише код, а в коді працює класичне ML — регресія</div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Агентні середовища: у кожній картці — команда запуску в теці проєкту; унизу — що в них спільне -->
+<section class="slide" id="s-env">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Три основні середовища</div>
+  <div class="rule"></div>
+  <div class="grid3 env-grid">
+    <div class="card env" data-step="1"><img class="env-logo" src="images/logo-claude.svg" alt="Claude"><h3>Claude Code</h3><div class="who">Anthropic</div><p>Термінал, редактор коду, застосунок. Моделі Claude</p><div class="env-term"><div>D:\проєкт&gt;<b style="--n:6">claude</b></div></div></div>
+    <div class="card env" data-step="2"><img class="env-logo" src="images/logo-openai.svg" alt="OpenAI"><h3>Codex</h3><div class="who">OpenAI</div><p>Термінал і редактор коду. Моделі OpenAI</p><div class="env-term"><div>D:\проєкт&gt;<b style="--n:5">codex</b></div></div></div>
+    <div class="card env" data-step="3" style="position:relative;"><img class="env-logo" src="images/logo-antigravity.png" alt="Google Antigravity"><h3>Google Antigravity</h3><div class="who">Google</div><p>Застосунок для комп'ютера і термінальний Antigravity CLI. Моделі Gemini, можна обрати й інші</p><div class="env-term"><div>D:\проєкт&gt;<b style="--n:3">agy</b></div></div>
+      <div class="chip accent" data-step="5" style="position:absolute; right:-14px; top:-30px; margin:0;">Практика сьогодні — тут</div></div>
+  </div>
+  <div class="env-common" data-step="4">
+    <h4>Спільне</h4>
+    <div style="--k:0"><svg class="ico" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>працюють у теці проєкту</div>
+    <div style="--k:1"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg>самі запускають код</div>
+    <div style="--k:2"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>дозволи й пісочниця</div>
+    <div style="--k:3"><svg class="ico" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg>багатокрокові задачі</div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Що всередині агентного середовища: модель і обв'язка довкола неї -->
+<section class="slide" id="s-harness">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Що всередині агентного середовища</div>
+  <div class="rule" style="margin-bottom:30px;"></div>
+  <div class="harness">
+    <svg class="h-links" viewBox="0 0 1700 640" aria-hidden="true">
+      <circle class="h-ring" cx="850" cy="300" r="190"/>
+      <path class="h-link" data-step="1" data-anim="fade" d="M560 75 L716 166"/>
+      <path class="h-link" data-step="2" data-anim="fade" d="M560 238 L669 241"/>
+      <path class="h-link" data-step="3" data-anim="fade" d="M560 401 L669 359"/>
+      <path class="h-link" data-step="4" data-anim="fade" d="M560 564 L716 434"/>
+      <path class="h-link" data-step="5" data-anim="fade" d="M1140 75 L984 166"/>
+      <path class="h-link" data-step="6" data-anim="fade" d="M1140 238 L1031 241"/>
+      <path class="h-link" data-step="7" data-anim="fade" d="M1140 401 L1031 359"/>
+      <path class="h-link" data-step="8" data-anim="fade" d="M1140 564 L984 434"/>
+    </svg>
+    <div class="h-core"><b>Модель</b><span>LLM</span></div>
+    <div class="h-ring-label">обв'язка (harness)</div>
+    <div class="h-col left">
+    <div class="h-tile prac-on" data-step="1" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg><div><b>Цикл</b><span class="prac">на практиці</span><span>план → дія → результат → виправлення, доки задачу не виконано</span></div></div>
+    <div class="h-tile prac-on" data-step="2" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg><div><b>Інструменти</b><span class="prac">на практиці</span><span>файли, термінал, браузер</span></div></div>
+    <div class="h-tile prac-on" data-step="3" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg><div><b>Контекст і правила</b><span class="prac">на практиці</span><span>файл правил проєкту; вимоги — у файлах, а не в розмові</span></div></div>
+    <div class="h-tile prac-on" data-step="4" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><div><b>Дозволи й пісочниця</b><span class="prac">на практиці</span><span>що агентові можна, а що ні; критерії й тести він не змінює</span></div></div>
+    </div>
+    <div class="h-col right">
+    <div class="h-tile prac-on" data-step="5" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2c2.9.3 5.5 2.6 5.5 5.8"/></svg><div><b>Ролі</b><span class="prac">на практиці</span><span>окремі сесії з різними інструкціями: виконавець, рецензент</span></div></div>
+    <div class="h-tile" data-step="6" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 7h6"/></svg><div><b>Скіли</b><span>збережені методики, які агент підвантажує, коли потрібно</span></div></div>
+    <div class="h-tile" data-step="7" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><path d="M9 2v6M15 2v6"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg><div><b>MCP</b><span>стандартний «роз'єм» до бази, історіана, документації; в АСУТП — лише читання</span></div></div>
+    <div class="h-tile" data-step="8" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><div><b>Хуки</b><span>автоматичні перевірки на подіях: наприклад, тести після кожної зміни</span></div></div>
+    </div>
+    <div class="h-note" data-step="9">Та сама модель у чаті й в агентному середовищі працює по-різному — через обв'язку</div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Чат проти агентного середовища -->
+<section class="slide" id="s-chat">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Чат проти агентного середовища</div>
+  <div class="rule" style="margin-bottom:28px;"></div>
+  <table class="table tight">
+    <tr><th></th><th>Чат</th><th>Агентне середовище</th></tr>
+    <tr data-step="1" data-anim="fade"><td><svg class="ico-s" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Доступ до даних</td><td>Лише те, що ви вставили чи завантажили</td><td>Працює безпосередньо в теці проєкту</td></tr>
+    <tr data-step="2" data-anim="fade"><td><svg class="ico-s" viewBox="0 0 24 24"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></svg>Код</td><td>Ви копіюєте, запускаєте й повертаєте помилки</td><td>Сам запускає, бачить помилку й виправляє</td></tr>
+    <tr data-step="3" data-anim="fade"><td><svg class="ico-s" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg>Багатокрокова робота</td><td>Між кроками «руками» працюєте ви</td><td>Цикл «план → виконання → перевірка»</td></tr>
+    <tr data-step="4" data-anim="fade"><td><svg class="ico-s" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>Результат</td><td>Розмова</td><td>Скрипти, звіти, історія змін, які можна відтворити</td></tr>
+    <tr data-step="5" data-anim="fade"><td><svg class="ico-s" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>Контроль</td><td>—</td><td>Дозволи, заборони, пісочниця</td></tr>
+    <tr data-step="6" data-anim="fade"><td><svg class="ico-s" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2c2.9.3 5.5 2.6 5.5 5.8"/></svg>Ролі</td><td>Одна розмова</td><td>Окремі сесії з різними ролями: виконавець, рецензент</td></tr>
+    <tr data-step="7" data-anim="fade"><td><svg class="ico-s" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4M12 8v4l3 2"/></svg>Історія</td><td>В акаунті провайдера</td><td>Локально, а запити — у провайдера за його політикою</td></tr>
+  </table>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Хто крутить цикл: спершу чат, потім агентне середовище -->
+<section class="slide" id="s-loops">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Хто крутить цикл</div>
+  <div class="rule" style="margin-bottom:20px;"></div>
+  <div class="loops">
+    <svg viewBox="0 0 1620 620">
+        <!-- Блакитна шарова блискавка, що біжить по кільцю: ядро, сяйво й розряди довкола -->
+        <defs>
+          <radialGradient id="bl-core"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#e3f7ff"/><stop offset=".78" stop-color="#6fd0ff"/><stop offset="1" stop-color="#2f9fe0"/></radialGradient>
+          <radialGradient id="bl-glow"><stop offset="0" stop-color="#8fdcff" stop-opacity=".95"/><stop offset=".45" stop-color="#3aa9e6" stop-opacity=".5"/><stop offset="1" stop-color="#2f9fe0" stop-opacity="0"/></radialGradient>
+          <filter id="bl-soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <g class="loop chat" data-step="1" data-anim="fade">
+          <text class="hdr" x="420" y="44" text-anchor="middle">Чат</text>
+          <circle class="ring" cx="420" cy="320" r="175"/>
+          <g class="node h"><rect x="270" y="103" width="300" height="84" rx="14"/><text x="420" y="153" text-anchor="middle">Ви пишете запит</text></g>
+          <g class="node m"><rect x="445" y="278" width="300" height="84" rx="14"/><text text-anchor="middle"><tspan x="595" y="314">Модель відповідає</tspan><tspan x="595" y="340">кодом</tspan></text></g>
+          <g class="node h"><rect x="270" y="453" width="300" height="84" rx="14"/><text x="420" y="503" text-anchor="middle">Ви запускаєте код</text></g>
+          <g class="node h"><rect x="95" y="278" width="300" height="84" rx="14"/><text text-anchor="middle"><tspan x="245" y="314">Ви несете</tspan><tspan x="245" y="340">помилку назад</tspan></text></g>
+          <g class="bl">
+            <circle class="bl-glow" r="44" fill="url(#bl-glow)"/>
+            <g class="bl-arcs" filter="url(#bl-soft)"><g transform="scale(1.5)"><path d="M-3,-24 L3,-17 L-2,-12 L4,-6"/><path d="M21,10 L14,8 L16,3 L9,2"/><path d="M-20,12 L-13,9 L-15,4 L-8,3"/></g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.6s" repeatCount="indefinite"/></g>
+            <circle class="bl-core" r="16" fill="url(#bl-core)" filter="url(#bl-soft)"/>
+            <animateMotion dur="6s" repeatCount="indefinite" path="M420,145 a175,175 0 1,1 0,350 a175,175 0 1,1 0,-350"/>
+          </g>
+          <text class="cap" x="420" y="600" text-anchor="middle">Три кроки з чотирьох — ваші</text>
+        </g>
+        <g class="loop agent" data-step="2" data-anim="fade">
+          <text class="hdr" x="1200" y="44" text-anchor="middle">Агентне середовище</text>
+          <circle class="ring" cx="1200" cy="320" r="175"/>
+          <g class="node m"><rect x="1050" y="103" width="300" height="84" rx="14"/><text x="1200" y="153" text-anchor="middle">План</text></g>
+          <g class="node m"><rect x="1225" y="278" width="300" height="84" rx="14"/><text text-anchor="middle"><tspan x="1375" y="314">Пише й запускає</tspan><tspan x="1375" y="340">код</tspan></text></g>
+          <g class="node m"><rect x="1050" y="453" width="300" height="84" rx="14"/><text x="1200" y="503" text-anchor="middle">Бачить результат</text></g>
+          <g class="node m"><rect x="875" y="278" width="300" height="84" rx="14"/><text x="1025" y="328" text-anchor="middle">Виправляє</text></g>
+          <g class="bl">
+            <circle class="bl-glow" r="44" fill="url(#bl-glow)"/>
+            <g class="bl-arcs" filter="url(#bl-soft)"><g transform="scale(1.5)"><path d="M-3,-24 L3,-17 L-2,-12 L4,-6"/><path d="M21,10 L14,8 L16,3 L9,2"/><path d="M-20,12 L-13,9 L-15,4 L-8,3"/></g><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="1.2s" repeatCount="indefinite"/></g>
+            <circle class="bl-core" r="16" fill="url(#bl-core)" filter="url(#bl-soft)"/>
+            <animateMotion dur="3s" repeatCount="indefinite" path="M1200,145 a175,175 0 1,1 0,350 a175,175 0 1,1 0,-350"/>
+          </g>
+          <g class="node h small"><rect x="1385" y="66" width="230" height="74" rx="14"/><text text-anchor="middle"><tspan x="1500" y="97">Ви: задача</tspan><tspan x="1500" y="122">і критерії</tspan></text></g>
+          <path class="link" d="M1385 116 L1356 130"/>
+          <g class="node h small"><rect x="1385" y="500" width="230" height="74" rx="14"/><text text-anchor="middle"><tspan x="1500" y="531">Ви: перевіряєте</tspan><tspan x="1500" y="556">результат</tspan></text></g>
+          <path class="link" d="M1356 510 L1385 524"/>
+          <text class="cap" x="1200" y="600" text-anchor="middle">Ви — на вході й на виході</text>
+        </g>
+      </svg>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Чат не зникає: мінуси чату й порівняння вікна чату з терміналом агента -->
+<section class="slide" id="s-chat2">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Чат не зникає</div>
+  <div class="rule"></div>
+  <div class="grid2" style="grid-template-columns:820px 1fr;">
+    <div>
+      <div class="lead" style="font-weight:800; color:var(--ink); margin-bottom:26px;">Мінуси роботи через чат</div>
+      <ul class="bars icons">
+        <li data-step="1"><svg class="ico" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>Постійний копіпаст</li>
+        <li data-step="2"><svg class="ico" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3 3.9M6.6 6.6C3.9 8.3 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 4.4-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>Модель не бачить реальних даних і не може перевірити себе запуском</li>
+        <li data-step="3"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h4"/></svg>Контекст губиться</li>
+        <li data-step="4"><svg class="ico" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg>Результат неможливо відтворити</li>
+      </ul>
+    </div>
+    <div class="duo">
+      <div class="win" data-step="5" data-anim="right">
+        <div class="win-bar"><i></i><i></i><i></i><b>Чат — для розмови й ідей</b></div>
+        <div class="win-body chat">
+          <div class="bubble me" style="--k:0">Як розрахувати природну вологість повітря з температури, вологості й тиску?</div>
+          <div class="bubble ai" style="--k:1">Ось формула й пояснення кожного члена</div>
+        </div>
+        <div class="win-cap">На практиці в чаті з'ясуємо методику розрахунку вологості</div>
+      </div>
+      <div class="win dark" data-step="6" data-anim="right">
+        <div class="win-bar"><i></i><i></i><i></i><b>Агент — для роботи з файлами й даними</b></div>
+        <div class="win-body term">
+          <div class="ln" style="--k:0">› читаю дані з master-class/data</div>
+          <div class="ln" style="--k:1">› пишу scripts/check.py</div>
+          <div class="ln err" style="--k:2">› запускаю — KeyError: 'date'</div>
+          <div class="ln" style="--k:3">› виправляю й запускаю знову</div>
+          <div class="ln ok" style="--k:4">✓ готово: plots/fig1.png</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Агентний flow і агентний loop: кроки задає людина, а всередині агентних кроків модель сама крутить цикл -->
+<section class="slide" id="s-flow">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Агентний flow і агентний loop</div>
+  <div class="rule" style="margin-bottom:34px;"></div>
+  <div class="fl-defs">
+    <div class="fl-def" data-step="1"><b>Flow</b><span>потік кроків: їх наперед задає людина чи програма — передбачувано й відтворювано</span></div>
+    <div class="fl-def loop" data-step="2"><b>Loop</b><span>цикл усередині кроку: модель сама обирає наступну дію й інструмент — у межах дозволів</span></div>
+  </div>
+  <div class="fl-row" data-step="1">
+    <div class="fl-step" style="--k:0"><i>1</i><b>Область</b><em>чат</em></div>
+    <div class="fl-step" style="--k:1"><i>2</i><b>Глибокий пошук</b><em>чат</em></div>
+    <div class="fl-step" style="--k:2"><i>3</i><b>Перевірка</b><em>чат</em></div>
+    <div class="fl-step ag" style="--k:3"><i>4</i><b>Завдання</b><em>агент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
+    <div class="fl-step ag" style="--k:4"><i>5</i><b>Виконання</b><em>агент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
+    <div class="fl-step ag" style="--k:5"><i>6</i><b>Рецензія</b><em>рецензент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
+    <div class="fl-step" style="--k:6"><i>7</i><b>Візуалізація</b><em>людина</em></div>
+    <div class="fl-step" style="--k:7"><i>8</i><b>Висновки</b><em>людина</em></div>
+  </div>
+  <div class="fl-stop" data-step="3">
+    <div class="fl-stop-head">Після кожного оберту агент перевіряє критерії приймання. Виходів три, і умови задаємо до старту:</div>
+    <div class="fl-exits">
+      <div class="ok"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9.5"/></svg><div><b>Критерії виконано</b>результат — людині на перевірку</div></div>
+      <div class="again"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg><div><b>Не виконано, ліміт не вичерпано</b>ще один оберт</div></div>
+      <div class="stop"><svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg><div><b>Вичерпано спроби, бюджет чи час — або потрібен дозвіл</b>зупинка, рішення за людиною</div></div>
+    </div>
+  </div>
+  <div class="callout" data-step="4" style="margin-top:28px;">Починайте з найпростішого: агентність — лише там, де вона виправдана. Наш метод — flow із 8 кроків, а loop крутиться лише всередині агентних.</div>
+  <div class="small" data-step="4" style="position:absolute; left:170px; bottom:34px;">Anthropic, «Building effective agents», 2024</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Глибокий пошук і RAG: два режими роботи з LLM, які легко сплутати -->
+<section class="slide" id="s-dr-rag">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Глибокий пошук і RAG</div>
+  <div class="rule" style="margin-bottom:30px;"></div>
+  <div class="dr-grid">
+    <div class="dr-card" data-step="1">
+      <div class="dr-mock">
+        <span class="q" style="--k:0"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></svg>ERA5 приземна вологість</span>
+        <span class="q" style="--k:1"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></svg>формула вологості повітря</span>
+        <span class="q" style="--k:2"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></svg>перевірка моделей часових рядів</span>
+        <div class="rep"><i style="--w:94%"></i><i style="--w:66%"></i><em>[1]</em><i style="--w:88%"></i><i style="--w:58%"></i><em>[2]</em><i style="--w:80%"></i><em>[3]</em></div>
+      </div>
+      <h3>Глибокий пошук</h3>
+      <p><b>Для чого:</b> модель сама робить десятки пошуків в інтернеті, читає джерела й пише звіт з посиланнями</p>
+      <p class="risk"><b>Ризик:</b> джерела не перевірені, логічні ланцюжки слабкі — тому після нього крок 3, перевірка у звичайному режимі</p>
+      <div class="in-method">У методі: крок 2</div>
+    </div>
+    <div class="dr-card" data-step="2">
+      <div class="dr-mock">
+        <div class="docs"><span class="doc" style="--k:0"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>інструкція.pdf</span><span class="doc" style="--k:1"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>стандарт.pdf</span><span class="doc" style="--k:2"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>звіт.docx</span></div>
+        <div class="bubble me">Що в інструкції сказано про калібрування?</div>
+        <div class="bubble ai">Відповідь лише з ваших документів <span class="cite">[1] інструкція.pdf</span></div>
+      </div>
+      <h3>RAG</h3>
+      <p><b>Для чого:</b> відповіді лише з ваших документів — інструкцій, стандартів, звітів — з посиланнями на них</p>
+      <p class="risk"><b>Ризик:</b> модель візьме не той фрагмент або стару версію документа</p>
+      <div class="in-method">Приклад: Gemini Notebook, раніше NotebookLM</div>
+    </div>
+  </div>
+  <div class="callout" data-step="3" style="margin-top:22px;">Глибокий пошук шукає по всьому інтернету, а RAG — лише у ваших документах.</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Від промпту до контексту: що сказати моделі і що вона бачить; ← → показують, як вікно контексту переповнюється і як його стискають -->
+<section class="slide" id="s-context" data-fx="2">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Від промпту до контексту</div>
+  <div class="rule" style="margin-bottom:34px;"></div>
+  <div class="grid2 ctx-grid">
+    <div class="ctx-card" data-step="1">
+      <h3>Промпт-інженерія: що сказати моделі</h3>
+      <div class="prompt-bad">«Відтвори ряд вологості з 2020 року за відкритими даними»</div>
+      <div class="missing"><span style="--k:0">яка величина й одиниці?</span><span style="--k:1">звідки відкриті дані?</span><span style="--k:2">погодинно чи за добу?</span><span style="--k:3">чим перевірити розрахунок?</span><span style="--k:4">що з пропусками й дублікатами?</span><span style="--k:5">як чесно перевірити модель?</span><span style="--k:6">з яким інтервалом прогнозу?</span><span style="--k:7">які рисунки й звіт?</span></div>
+      <div class="prompt-good" data-step="2"><b>Добре завдання:</b> роль · мета · дані · обмеження · критерії приймання · формат результату</div>
+    </div>
+    <div class="ctx-card" data-step="3">
+      <h3>Контекст-інженерія: що модель бачить</h3>
+      <div class="cw"><span class="seg s-role"></span><span class="seg s-files"></span><span class="seg s-tools"></span><span class="seg s-hist"></span><i class="cw-limit"></i></div>
+      <div class="cw-legend"><span><i class="s-role"></i>роль і правила</span><span><i class="s-files"></i>прочитані файли</span><span><i class="s-tools"></i>вивід команд</span><span><i class="s-hist"></i>історія розмови</span></div>
+      <div class="cw-cap">Вікно контексту обмежене: коли воно переповнене, модель гірше тримає головне</div>
+      <div class="ctx-tools" data-step="4"><span><b>Стиснення</b>історія → короткий підсумок</span><span><b>Файли</b>вимоги й результати поза розмовою: стиснення їх не зітре</span><span><b>Окрема сесія</b>чистий контекст, як у рецензента</span></div>
+    </div>
+  </div>
+  <div class="callout" data-step="5" style="margin-top:26px;">Промпт — що сказати. Контекст — усе, що модель бачить. Метапромптинг — коли промпт пише сама модель: людина ставить мету, модель складає з неї детальне завдання, людина його перевіряє.</div>
+  <div class="small" data-step="5" style="position:absolute; left:170px; bottom:34px;">Anthropic, «Effective context engineering for AI agents», 2025</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Команди керування агентом: Antigravity CLI (за changelog Antigravity) і відповідники в Claude Code та Codex -->
+<section class="slide" id="s-commands">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Команди керування агентом</div>
+  <div class="rule" style="margin-bottom:26px;"></div>
+  <table class="table cmd">
+    <tr><th><img src="images/logo-antigravity.png" alt="">Antigravity CLI</th><th>Що робить</th><th>Поняття</th></tr>
+    <tr data-step="1" data-anim="fade"><td><code>/grill-me</code></td><td>Перш ніж братися до роботи, агент розпитує про вимоги — по одному питанню</td><td><span class="tag t-prompt">промпт</span></td></tr>
+    <tr data-step="2" data-anim="fade"><td><code>/plan</code></td><td>Агент складає план, а ви читаєте й погоджуєте його до будь-яких змін</td><td><span class="tag t-flow">flow</span></td></tr>
+    <tr data-step="3" data-anim="fade"><td><code>/goal</code></td><td>Агент працює сам, доки ціль не перевірено як виконану або доки ви не зупините</td><td><span class="tag t-loop">loop</span></td></tr>
+    <tr data-step="4" data-anim="fade"><td><code>/context</code></td><td>Скільки вікна контексту вже зайнято</td><td><span class="tag t-ctx">контекст</span></td></tr>
+    <tr data-step="5" data-anim="fade"><td><code>/compact</code></td><td>Стиснути розмову в підсумок і звільнити вікно</td><td><span class="tag t-ctx">контекст</span></td></tr>
+    <tr data-step="6" data-anim="fade"><td><code>/clear</code></td><td>Почати розмову з чистого контексту</td><td><span class="tag t-ctx">контекст</span></td></tr>
+    <tr data-step="7" data-anim="fade"><td><code>/permissions</code></td><td>Що агентові дозволено, що заборонено, а що — лише з вашого підтвердження</td><td><span class="tag t-sec">безпека</span></td></tr>
+  </table>
+  <div class="cmd-note" data-step="8"><img src="images/logo-claude.svg" alt=""><img src="images/logo-openai.svg" alt=""><span>У Claude Code і Codex — ті самі <code>/plan</code>, <code>/compact</code>, <code>/clear</code>, а <code>/init</code> створює файл правил проєкту. Назви змінюються від версії до версії: повний список — <code>/help</code>.</span></div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Що бачить модель, те бачить провайдер -->
+<section class="slide" id="s-provider">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Що бачить модель, те бачить провайдер</div>
+  <div class="rule" style="margin-bottom:34px;"></div>
+  <div class="flowdata">
+    <div class="fd-box pc" data-step="1">
+      <svg class="ico big" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20M9 16v4M15 16v4"/></svg>
+      <b>Ваш комп'ютер</b>
+      <div class="fd-items"><span>ваш запит</span><span>файли, які прочитав агент</span><span>вивід команд</span></div>
+      <div class="fd-local" data-step="4"><svg class="ico" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Історія агента — на диску, разом з усім, що він прочитав</div>
+    </div>
+    <div class="fd-pipe" data-step="1"><i></i><i></i><i></i><span>увесь контекст — з кожним запитом</span></div>
+    <div class="fd-box cloud" data-step="1">
+      <svg class="ico big" viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>
+      <b>Провайдер моделі</b>
+      <div class="fd-keep" data-step="2"><span><b>30 днів</b> — Anthropic, OpenAI</span><span><b>72 години</b> — Gemini з вимкненою історією</span><span>позначене фільтрами безпеки — довше</span></div>
+      <div class="fd-train" data-step="3">Навчання на ваших даних залежить від акаунта й налаштувань; у частині продуктів воно увімкнене за замовчуванням</div>
+    </div>
+  </div>
+  <div class="callout" data-step="5" style="margin-top:34px;">Вимкнене навчання ≠ дані не залишають комп'ютер. Тому сирих даних агент не бачить: він пише код, а запускаємо його ми. Це побачите на практиці.</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Принципи безпеки роботи з даними: дані захищає архітектура, а не прохання до агента -->
+<section class="slide" id="s-security">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Принципи безпеки роботи з даними</div>
+  <div class="rule" style="margin-bottom:26px;"></div>
+  <div class="sens" data-step="1"><b>Чутливе — не лише персональне:</b><span style="--k:0">погодинні рапорти</span><span style="--k:1">режими роботи</span><span style="--k:2">енергоспоживання</span><span style="--k:3">журнали аварій</span><span style="--k:4">схема мережі</span></div>
+  <div class="c2d" data-step="2">
+    <div class="c2d-node ag" style="--k:0"><b>Агент</b>бачить опис даних і вигаданий зразок, пише скрипт</div>
+    <i class="c2d-arr" style="--k:0"></i>
+    <div class="c2d-zone" style="--k:1">
+      <div class="c2d-node hu"><b>Людина</b>перевіряє скрипт і запускає його в окремому терміналі</div>
+      <i class="c2d-arr" style="--k:1"></i>
+      <div class="c2d-node sc"><b>Скрипт</b>читає реальні дані й віддає лише потрібне: агрегати чи знеособлений ряд</div>
+      <em>реальні дані — лише тут</em>
+    </div>
+    <i class="c2d-arr" style="--k:2"></i>
+    <div class="c2d-node ag" style="--k:3"><b>Агент</b>працює з результатом</div>
+  </div>
+  <div class="lv-grid">
+    <div class="lv" data-step="3"><div class="lv-h"><svg class="ico" viewBox="0 0 24 24"><path d="M4 21V5l8-3 8 3v16"/><path d="M9 21v-5h6v5M8 8h2M14 8h2M8 12h2M14 12h2"/></svg><b>Організаційний рівень</b></div><p>Комерційний акаунт або API, навчання й телеметрію вимкнено, використання даних погоджено з їхнім власником</p></div>
+    <div class="lv" data-step="4"><div class="lv-h"><svg class="ico" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 12l5 5M15 12l-5 5"/></svg><b>Правила інструменту</b></div><span class="prac">на практиці</span><p>Заборони на теки й файли. Це м'який бар'єр: скрипт, який запустив агент, його обходить</p></div>
+    <div class="lv" data-step="5"><div class="lv-h"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10 10V8.5a2 2 0 0 1 4 0V10"/></svg><b>Ізоляція ОС</b></div><span class="prac">на практиці</span><p>Пісочниця, окремий обліковий запис, контейнер без мережі — або даних на цій машині немає зовсім</p></div>
+    <div class="lv" data-step="6"><div class="lv-h"><svg class="ico" viewBox="0 0 24 24"><path d="M3 7c3 0 6-1.5 9-3 3 1.5 6 3 9 3v4c0 5-4 9-9 10-5-1-9-5-9-10z"/><path d="M7.5 11.5c1-.8 2.5-.8 3.5 0M13 11.5c1-.8 2.5-.8 3.5 0"/></svg><b>Знеособлення</b></div><span class="prac">на практиці</span><p>Лише потрібні поля, нейтральні назви, нормування. Ризик зменшує, але не прибирає</p></div>
+  </div>
+  <div class="callout" data-step="7" style="margin-top:22px; font-size:30px; padding:22px 34px;">Дані захищає архітектура, а не прохання до агента. Агентові — копії даних, а не доступ до систем керування: запис у PLC чи SCADA — окреме інженерне рішення.</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Пастка Гелл-Манна: звідки ефект -->
+<section class="slide" id="s-gm1">
+  <div class="label">Пастка амнезії Гелл-Манна</div>
+  <div class="title">Звідки ефект</div>
+  <div class="rule"></div>
+  <div class="grid2">
+    <div class="person" data-step="1">
+      <img src="images/crichton.jpg" alt="" style="object-position:58% 25%;">
+      <div class="txt" style="font-size:28px;"><b>Майкл Крайтон, 2002</b>Автор «Парку Юрського періоду», виступ «Why Speculate?». У статті на знайому тему бачите, що журналіст плутає факти й навіть причину з наслідком. На сусідній сторінці — знову вірите кожному слову.
+        <div class="src">Фото: Jon Chase / Harvard News Office, CC BY 3.0, Wikimedia Commons</div></div>
+    </div>
+    <div class="person" data-step="2">
+      <img src="images/gell-mann.jpg" alt="" style="object-position:50% 20%;">
+      <div class="txt" style="font-size:28px;"><b>Мюррей Гелл-Манн</b>Фізик, нобелівський лауреат. Ефект названо його ім'ям напівжартома: Крайтон колись обговорював ефект з Гелл-Манном, а гучне ім'я додає ваги.
+        <div class="src">Фото: Melirius; похідна робота Dmitry89, CC BY-SA 3.0, Wikimedia Commons</div></div>
+    </div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Версія для ШІ: помилки видно лише у своїй галузі -->
+<section class="slide" id="s-gm2">
+  <div class="label">Пастка амнезії Гелл-Манна</div>
+  <div class="title">Версія для ШІ</div>
+  <div class="rule" style="margin-bottom:30px;"></div>
+  <div class="vs" data-step="1">
+    <div class="side own"><h3>Своя галузь</h3><p>Бачите поверхневість і впевнені помилки</p>
+      <div class="mock seen"><i style="--w:94%"></i><i class="err" style="--w:76%"></i><i style="--w:88%"></i><i class="err" style="--w:62%"></i></div>
+      <div class="mock-notes"><div class="mock-note bad">✗ Помилки видно одразу</div></div>
+    </div>
+    <div class="side foreign"><h3>Чужа галузь: код, статистика, право, медицина</h3><p>Відповідь здається блискучою</p>
+      <div class="mock-wrap">
+        <div class="mock"><i style="--w:94%"></i><i class="err" style="--w:76%"></i><i style="--w:88%"></i><i class="err" style="--w:62%"></i></div>
+        <div class="mock seen overlay" data-step="2" data-anim="fade"><i style="--w:94%"></i><i class="err" style="--w:76%"></i><i style="--w:88%"></i><i class="err" style="--w:62%"></i></div>
+      </div>
+      <div class="mock-notes"><div class="mock-note good">✓ Виглядає бездоганно</div><div class="mock-note bad" data-step="2" data-anim="fade">✗ Помилок стільки ж — ви їх не бачили</div></div>
+    </div>
+  </div>
+  <div class="callout" data-step="3" style="margin-top:26px;">ШІ не стає розумнішим, коли змінюється тема. Ви просто втрачаєте здатність помітити помилку.</div>
+  <ul class="bars compact" style="margin-top:28px;">
+    <li data-step="4"><b>Хто не програмує</b> — побачить в агентові «геніального програміста»</li>
+    <li data-step="5"><b>Програмісти</b> — помітять огріхи в коді, але повірять агентові в метеорології, статистиці чи металургії</li>
+  </ul>
+  <div class="small" data-step="5" style="position:absolute; left:170px; bottom:34px;">Ч. Атлас, «The Gell-Mann Amnesia Trap», 2025 · Д. Нільсен, «A in AI stands for amnesia», 2025</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Захист -->
+<section class="slide" id="s-checks">
+  <div class="label">Пастка амнезії Гелл-Манна</div>
+  <div class="title">Захист — незалежні перевірки</div>
+  <div class="rule"></div>
+  <div class="grid4" style="grid-template-columns:repeat(5, 1fr); gap:26px;">
+    <div class="card check" data-step="1"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.2 9.5"/></svg><h3>Відома відповідь</h3><p>контрольний приклад з відомим результатом</p></div>
+    <div class="card check" data-step="2"><svg class="ico" viewBox="0 0 24 24"><path d="M3.5 17a8.5 8.5 0 0 1 17 0"/><path d="M12 17l4.5-5.5"/><circle cx="12" cy="17" r="1.6"/></svg><h3>Фізичні межі</h3><p>чи це взагалі можливо</p></div>
+    <div class="card check" data-step="3"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="11" height="14" rx="2"/><path d="M10 6V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/></svg><h3>Друге джерело</h3><p>незалежні дані</p></div>
+    <div class="card check" data-step="4"><svg class="ico" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></svg><h3>Окремий рецензент</h3><p>окрема сесія з іншою роллю</p></div>
+    <div class="card check" data-step="5"><svg class="ico" viewBox="0 0 24 24"><path d="M4 3v17h17"/><path d="M7.5 15l4-4.5 3 3L20 7"/></svg><h3>Візуалізація</h3><p>подивитися на сирі дані</p></div>
+  </div>
+  <div class="callout" data-step="6" style="margin-top:56px;">Саме з цього складається метод далі. Навіть якщо ви не фахівець — є способи перевірити.</div>
+  <div class="caveat" data-step="7"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.3"/></svg>Окремий рецензент — це рецензія, а не доказ: моделі можуть помилятися однаково. Доказ дають перевірки, незалежні від моделі.</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Практика: тут зупиняємося і переходимо в термінал; після практики — стрілка вниз -->
+<section class="slide s-section" id="s-practice">
+  <div class="bg ken" style="--shade: linear-gradient(90deg, rgba(14, 36, 64, .93) 0%, rgba(14, 36, 64, .78) 50%, rgba(14, 36, 64, .42) 100%);"><img src="images/practice.png" alt=""></div>
+  <div class="label" style="margin-top:20px;">Практика</div>
+  <div class="title" style="font-size:72px;">Від питання до перевіреного результату</div>
+  <div class="lead" style="margin-top:22px; font-size:36px;">Наживо в Antigravity CLI</div>
+  <div class="route" data-step="1">
+    <div class="r-head">Вологість: від закритих даних до висновків</div>
+    <div class="r-steps"><span style="--k:0"><i>1</i>Глибокий пошук і RAG<em>показ: фаза дослідження</em></span><span style="--k:1"><i>2</i>Знеособлення<em>агент пише скрипт, людина запускає</em></span><span style="--k:2"><i>3</i>Методика<em>чат</em></span><span style="--k:3"><i>4</i>Дані, відкриті дані, модель<em>агент-виконавець</em></span><span style="--k:4"><i>5</i>Рецензія й виправлення<em>агент-рецензент</em></span><span style="--k:5"><i>6</i>Висновки<em>людина</em></span></div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Підсумки: п'ять думок — п'ять високих карток на всю ширину слайда -->
+<section class="slide" id="s-sum">
+  <div class="label">Підсумки</div>
+  <div class="title">П'ять думок, які варто забрати</div>
+  <div class="rule"></div>
+  <div class="sum-grid">
+    <div class="sum-card" data-step="1"><span class="sum-n">01</span><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><rect x="7" y="7" width="10" height="10" rx="2"/><rect x="10.3" y="10.3" width="3.4" height="3.4" rx="1"/></svg><b>ШІ — не&nbsp;лише чат‑боти</b><p>Регресія — теж машинне навчання, а агент — система довкола LLM</p></div>
+    <div class="sum-card" data-step="2"><span class="sum-n">02</span><svg class="ico" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><b>Агент працює з вашими файлами, кодом і даними</b><p>Це його сила і водночас ризик</p></div>
+    <div class="sum-card" data-step="3"><span class="sum-n">03</span><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><b>Цінність зміщується</b><p>Від написання коду — до постановки задачі й перевірки</p></div>
+    <div class="sum-card" data-step="4"><span class="sum-n">04</span><svg class="ico" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/><path d="M7.8 10.6l1.9 1.9 3.4-3.6"/></svg><b>Перевіряй, а не вір</b><p>Особливо там, де ти не експерт</p></div>
+    <div class="sum-card" data-step="5"><span class="sum-n">05</span><svg class="ico" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b>Що бачить модель, те бачить провайдер</b><p>Сирих даних агент не бачить</p></div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Роль людини в демо -->
+<section class="slide" id="s-human2">
+  <div class="label">Підсумки</div>
+  <div class="title">Що робила людина</div>
+  <div class="rule"></div>
+  <div class="tiles" data-step="1">
+    <div class="tile" style="--k:0"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.5 2.5 0 1 1 3.4 2.3c-.6.3-.9.8-.9 1.5v.6"/><path d="M12 16.6v.4"/></svg>ставила питання</div>
+    <div class="tile" style="--k:1"><svg class="ico" viewBox="0 0 24 24"><path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 6l1.5 1.5L8 4.5M3.5 12l1.5 1.5L8 10.5M3.5 18l1.5 1.5L8 16.5"/></svg>визначала критерії</div>
+    <div class="tile" style="--k:2"><svg class="ico" viewBox="0 0 24 24"><path d="M3.5 17a8.5 8.5 0 0 1 17 0"/><path d="M12 17l4.5-5.5"/><circle cx="12" cy="17" r="1.6"/></svg>перевіряла фізичний сенс</div>
+    <div class="tile" style="--k:3"><svg class="ico" viewBox="0 0 24 24"><path d="M4 3v17h17"/><path d="M7.5 15l4-4.5 3 3L20 7"/></svg>дивилася на дані</div>
+    <div class="tile" style="--k:4"><svg class="ico" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M14.5 4.5l5 5L9 20H4v-5z"/></svg>ухвалювала висновки</div>
+  </div>
+  <div class="callout signed" data-step="2" style="margin-top:40px;">Висновки — відповідальність людини: агент готує чернетку, людина перевіряє кожне твердження, вирішує й підписує.
+    <svg class="sign" viewBox="0 0 300 90"><path d="M8 62c22-40 40-52 48-30 6 18-12 40-6 44 9 6 26-38 38-36 10 2-4 30 6 30 12 0 20-34 34-32 12 2 2 26 14 26 16 0 26-28 44-26 20 2 32 22 70 4"/></svg></div>
+  <div class="quote" data-step="3" style="margin-top:56px;">Програмування не знецінюється — воно стає мовою перевірки»</div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Питання: на тлі рухається мережа, довкола фото обертається кільце -->
+<section class="slide s-end" id="s-end">
+  <canvas class="net" data-rgb="26, 70, 110" data-n="70"></canvas>
+  <div class="ring"><img class="portrait" src="images/author.png" alt=""></div>
+  <div>
+    <div class="ask">Питання?</div>
+    <div class="who">Сергій Мірошниченко</div>
+    <div class="pos">старший викладач і аспірант кафедри автоматизації, електро- та робототехнічних систем<br>ТОВ «Технічний університет «Метінвест Політехніка»»</div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter"></div>
+<div class="fxdots" id="fxdots"></div>
+</main>
+<script src="fx.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
