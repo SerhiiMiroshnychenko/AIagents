@@ -183,6 +183,45 @@ b, strong { font-weight: 800; color: var(--ink); }
 .s-section .card p { color: #d6e1ef; }
 .s-section .logo { filter: brightness(0) invert(1); opacity: .9; }
 
+/* ---------- Чотири революції: шкала часу, над кожною точкою картка ----------
+   Колонки рівні й без проміжків, тож точки стоять на 10, 30, 50, 70 і 90 % ширини — там, де закінчуються відрізки шкали.
+   Суцільні відрізки до 4.0 дотягуються з кожною карткою; пунктир у майбутнє — разом із карткою «?». */
+.rv-sub { margin-top: 14px; font-size: 34px; line-height: 1.3; font-weight: 600; color: var(--text); }
+.rv { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); }
+.rv-col { position: relative; display: flex; flex-direction: column; padding: 0 12px 100px; }
+.rv-card { flex: 1; display: flex; flex-direction: column; background: var(--navy); border-radius: 12px; padding: 18px 22px 22px; color: #c7d4e5; box-shadow: 0 10px 26px rgba(14, 36, 64, .12); }
+.rv-head { display: flex; align-items: center; justify-content: space-between; height: 60px; margin-bottom: 10px; }
+.rv-num { font-size: 44px; line-height: 1; font-weight: 800; color: #9fb6d3; }
+.rv-card .ico { width: 46px; height: 46px; stroke: #fff; }
+.rv-card b { font-size: 28px; line-height: 1.15; color: #fff; }
+.rv-when { margin-top: 6px; font-size: 20px; font-weight: 700; color: #9fb6d3; }
+.rv-tech { margin: 8px 0 16px; font-size: 20px; line-height: 1.35; }
+.rv-auto { margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, .22); font-size: 22px; line-height: 1.2; font-weight: 800; color: #fff; }
+.rv-auto i { display: block; margin-bottom: 5px; font-style: normal; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: #9fb6d3; }
+/* П'ята — ще не усталена: акцентний колір, пунктирна рамка, напівпрозора заливка й «?» замість номера */
+.rv-col.next .rv-card { background: rgba(242, 107, 33, .1); border: 3px dashed var(--accent); padding: 15px 19px 19px; box-shadow: none; color: var(--text); }
+.rv-col.next .rv-num { font-size: 64px; color: var(--accent); }
+.rv-col.next .ico { stroke: var(--accent); }
+.rv-col.next b, .rv-col.next .rv-auto { color: var(--ink); }
+.rv-col.next .rv-when, .rv-col.next .rv-auto i { color: var(--accent); }
+.rv-col.next .rv-auto { border-top-color: rgba(242, 107, 33, .4); }
+/* Точка на шкалі з ніжкою до картки */
+.rv-dot { position: absolute; left: 50%; bottom: 47px; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: var(--navy); box-shadow: 0 0 0 5px #fff; }
+.rv-dot::before { content: ''; position: absolute; left: 50%; bottom: 100%; width: 3px; height: 31px; margin-left: -1.5px; background: var(--navy); }
+.rv-col.next .rv-dot { background: #fff; border: 4px solid var(--accent); }
+.rv-col.next .rv-dot::before { width: 0; background: none; border-left: 3px dashed var(--accent); }
+.rv-axis { position: absolute; left: 0; right: 0; bottom: 58px; }
+.rv-axis i { position: absolute; top: -3px; height: 6px; background: var(--navy); transform-origin: left; }
+.rv-axis i[data-step] { opacity: 1; transform: scaleX(0); transition: transform .8s var(--ease); }
+.rv-axis i[data-step].shown { transform: scaleX(1); }
+.rv-axis i.dash { background: repeating-linear-gradient(90deg, var(--accent) 0 16px, transparent 16px 28px); }
+.rv-now { position: absolute; top: 20px; width: 300px; margin-left: -150px; text-align: center; font-size: 22px; font-weight: 800; color: var(--accent); white-space: nowrap; }
+.rv-now::before { content: ''; position: absolute; left: 50%; top: -34px; width: 4px; height: 26px; margin-left: -2px; border-radius: 2px; background: var(--accent); }
+.rv-key { margin-top: 26px; padding: 20px 36px; font-size: 30px; }
+.rv-key span { display: block; margin-top: 4px; font-size: 36px; font-weight: 800; color: var(--navy); }
+.rv-key em { font-style: normal; color: var(--accent); }
+.rv-src { margin-top: 14px; font-size: 16px; color: #8a97a8; }
+
 /* ---------- Питання для обговорення ---------- */
 .question { font-size: 84px; line-height: 1.15; font-weight: 800; color: var(--ink); max-width: 1600px; margin-top: 30px; }
 
@@ -306,12 +345,16 @@ b, strong { font-weight: 800; color: var(--ink); }
 .loops .node.m rect { fill: var(--navy); }
 .loops .node.small text { font-size: 21px; }
 .loops .link { stroke: var(--accent); stroke-width: 4; }
-/* Блакитна шарова блискавка: сяйво пульсує, розряди мерехтять і обертаються довкола ядра */
-.loops .bl-glow { transform-box: fill-box; transform-origin: center; animation: bl-pulse .9s ease-in-out infinite alternate; }
-.loops .bl-arcs path { fill: none; stroke: #bfeaff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.loops .bl-arcs { animation: bl-flicker .28s steps(2, jump-none) infinite; }
-@keyframes bl-pulse { from { opacity: .7; transform: scale(.88); } to { opacity: 1; transform: scale(1.15); } }
-@keyframes bl-flicker { 50% { opacity: .3; } }
+/* Крапка завтовшки з кільце біжить під блоками (fx.js); блок, під яким вона йде, світлішає, а довкола нього сяйво */
+.loops .dot { fill: var(--ink); }
+.loops .node rect, .loops .glows rect { transition: fill .15s, opacity .15s; }
+.loops .node.m.lit rect { fill: #2f6fae; }
+.loops .node.h.lit rect { fill: #ff8a3d; }
+.loops .glows { filter: url(#loop-glow); }
+.loops .glows rect { opacity: 0; }
+.loops .glows .m { fill: #5a9ee0; }
+.loops .glows .h { fill: #ffa060; }
+.loops .glows .lit { opacity: 1; }
 .loops .cap { font-size: 28px; font-weight: 800; fill: var(--ink); }
 .loops .loop { transition: opacity .5s; }
 
@@ -331,6 +374,8 @@ b, strong { font-weight: 800; color: var(--ink); }
 .hr-card .ico, .hr-loop { display: block; flex: none; width: 54px; height: 54px; margin: 10px 0 8px; }
 .hr-card b { font-size: 31px; line-height: 1.15; color: var(--ink); }
 .hr-card > span:last-child { margin-top: 8px; font-size: 20px; line-height: 1.35; color: var(--muted); }
+/* «Варту розв'язання» — головне на слайді, тому крупніше й кольором акценту */
+.hr-key { margin-top: 8px; font-size: 23px; font-weight: 800; font-style: normal; line-height: 1.15; color: var(--accent); }
 .hr-tag { display: block; font-size: 15px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 .hr-card.ai { background: var(--navy); border-color: var(--navy); border-top-color: #9fb6d3; }
 .hr-card.ai b { color: #fff; }

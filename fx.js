@@ -2,7 +2,8 @@
  * Анімації та ефекти слайдів. Зміст показують стрілки ↓ ↑ (app.js), а тут — те, що рухається:
  *   фонова «мережа» на першому й останньому слайдах;
  *   питання, що з'являється слово за словом;
- *   графіки, які малюються на кроці або перемикаються стрілками ← →.
+ *   графіки, які малюються на кроці або перемикаються стрілками ← →;
+ *   крапка, що біжить по кільцях циклів і підсвічує блоки.
  * Ефекти, яким досить CSS, вмикає атрибут data-fxs на слайді (його ставить app.js).
  * Скрипт підключено перед app.js, щоб ефекти встигли підписатися на події слайдів.
  */
@@ -293,6 +294,54 @@
     }
     setWait(waits[0], false);
     slide.addEventListener('fx', (e) => setWait(waits[e.detail.fx], true));
+  })();
+
+  // ---------- «Хто крутить цикл»: крапка біжить по кільцю під блоками, і блок над нею світиться ----------
+  (() => {
+    const slide = $('#s-loops');
+    if (!slide) return;
+    const loops = $$('.loop', slide).map((loop) => {
+      const ring = $('.ring', loop);
+      const [cx, cy, r] = ['cx', 'cy', 'r'].map((k) => +ring.getAttribute(k));
+      // Сяйво — розмиті копії блоків під кільцем; видно лише копію блока, під яким крапка.
+      const glows = svgEl('g', { class: 'glows' }, loop);
+      ring.before(glows);
+      const blocks = $$('.node:not(.small)', loop).map((node) => {
+        const rect = $('rect', node);
+        const [x, y, w, h] = ['x', 'y', 'width', 'height'].map((k) => +rect.getAttribute(k));
+        const glow = svgEl('rect', { x, y, width: w, height: h, rx: rect.getAttribute('rx'), class: node.classList.contains('h') ? 'h' : 'm' }, glows);
+        return { node, glow, x, y, w, h };
+      });
+      const dot = $('.dot', loop);
+      return { dot, cx, cy, r, lap: +dot.dataset.lap * 1000, blocks };
+    });
+    let raf = 0;
+    let t0 = 0;
+    // Крапка стартує згори й іде за годинниковою стрілкою; блок світиться, поки її центр під ним.
+    const frame = (t) => {
+      loops.forEach(({ dot, cx, cy, r, lap, blocks }) => {
+        const a = (t - t0) / lap * 2 * Math.PI;
+        const x = cx + r * Math.sin(a);
+        const y = cy - r * Math.cos(a);
+        dot.setAttribute('cx', x.toFixed(1));
+        dot.setAttribute('cy', y.toFixed(1));
+        blocks.forEach((b) => {
+          const under = x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h;
+          b.node.classList.toggle('lit', under);
+          b.glow.classList.toggle('lit', under);
+        });
+      });
+      raf = requestAnimationFrame(frame);
+    };
+    slide.addEventListener('enter', () => {
+      if (raf) return;
+      t0 = performance.now();
+      raf = requestAnimationFrame(frame);
+    });
+    slide.addEventListener('leave', () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    });
   })();
 
   // ---------- Значки в кроках «малюються» лінією, коли крок з'являється ----------
