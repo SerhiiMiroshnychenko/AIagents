@@ -63,12 +63,6 @@ img { display: block; }
 [data-step][data-anim="fade"] { transform: none; }
 [data-step].shown { opacity: 1; transform: none; }
 
-/* ---------- Ефекти: стрілки вліво/вправо; стан ефекту слайд отримує в атрибуті data-fxs ---------- */
-[data-hl] { transition: opacity .35s ease, box-shadow .35s ease, background-color .35s ease, transform .35s var(--ease); }
-[data-hl].hl { box-shadow: 0 0 0 5px var(--accent); transform: scale(1.02); }
-[data-step][data-hl].shown.hl { transform: scale(1.02); }
-.slide.dim-others.hl-active [data-hl]:not(.hl) { opacity: .35; }
-
 /* Фото, що повільно наближається, і фонова мережа */
 .ken img { animation: ken 36s ease-in-out infinite alternate; }
 @keyframes ken { from { transform: scale(1); } to { transform: scale(1.12) translate(-1.5%, -1%); } }
@@ -82,11 +76,10 @@ canvas.net { position: absolute; inset: 0; width: 100%; height: 100%; pointer-ev
 /* ---------- Службові елементи ---------- */
 .progress { position: absolute; left: 0; bottom: 0; height: 6px; width: 0; background: var(--accent); z-index: 10; transition: width .9s var(--ease); }
 .counter { position: absolute; left: 60px; bottom: 34px; font-size: 20px; font-weight: 600; color: #9aa7b8; z-index: 10; }
-.fxdots { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 12px; z-index: 10; }
-.fxdots i { width: 14px; height: 14px; border-radius: 50%; background: #cfd9e6; transition: background .3s; }
-.fxdots i.on { background: var(--accent); }
-.fxdots i.blink { animation: dot-blink .4s ease-in-out 6 alternate; }
-@keyframes dot-blink { to { background: var(--accent); transform: scale(1.8); box-shadow: 0 0 0 6px rgba(242, 107, 33, .25); } }
+/* Сірі примітки внизу слайда: зноски й те, що доповідач каже словами (на слайді має бути все, що звучить) */
+.notes { position: absolute; left: 170px; right: 320px; bottom: 28px; display: flex; flex-direction: column; gap: 4px; font-size: 21px; line-height: 1.35; color: #8a97a8; }
+.notes .src { font-size: 15px; }
+.s-section .notes { color: rgba(214, 225, 239, .7); }
 .logo { position: absolute; right: 64px; bottom: 34px; height: 46px; }
 .credit { position: absolute; font-size: 15px; color: #8a97a8; line-height: 1.3; }
 .credit.on-photo { right: 60px; top: 24px; color: #fff; background: rgba(14, 36, 64, .55); padding: 4px 10px; border-radius: 4px; }
@@ -123,6 +116,11 @@ b, strong { font-weight: 800; color: var(--ink); }
 .card { background: var(--soft); border-top: 7px solid var(--accent); border-radius: 6px; padding: 34px 34px 36px; }
 .card .big { font-size: 78px; line-height: 1.05; font-weight: 800; color: var(--navy); margin-bottom: 18px; white-space: nowrap; }
 .card .big.mid { font-size: 60px; }
+/* Швидкість: чотири цифри — 2×2 на весь слайд */
+.speed { grid-template-columns: 1fr 1fr; gap: 30px 40px; }
+.speed .card { padding: 26px 40px; }
+.speed .card .big, .speed .card .big.mid { font-size: 76px; margin-bottom: 10px; }
+.speed .card p { font-size: 29px; }
 .card p { font-size: 27px; line-height: 1.4; font-weight: 500; }
 .card h3 { font-size: 38px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
 .card .who { font-size: 26px; font-weight: 700; color: var(--accent); margin-bottom: 18px; }
@@ -132,8 +130,6 @@ b, strong { font-weight: 800; color: var(--ink); }
 .table td { background: var(--soft); font-size: 27px; line-height: 1.35; padding: 16px 28px; vertical-align: top; }
 .table td:first-child { font-weight: 800; color: var(--ink); width: 26%; }
 .table tr.accent td { background: #fde9dc; }
-.table.tight th { padding: 14px 26px; font-size: 26px; }
-.table.tight td { padding: 11px 26px; font-size: 25px; }
 
 .chip { display: inline-block; background: var(--soft); border-radius: 40px; padding: 14px 30px; font-size: 28px; font-weight: 700; color: var(--ink); margin: 0 14px 16px 0; }
 .chip.accent { background: var(--accent); color: #fff; }
@@ -226,6 +222,12 @@ b, strong { font-weight: 800; color: var(--ink); }
 .question { font-size: 84px; line-height: 1.15; font-weight: 800; color: var(--ink); max-width: 1600px; margin-top: 30px; }
 
 /* ---------- Виступ Sohl-Dickstein: лінійне продовження проти експоненти ---------- */
+/* Слайд 4: назви спершу англійською, під ними переклад сірим */
+.ua { color: #8a97a8; font-weight: 600; }
+.title .ua { font-size: 34px; margin-left: 14px; }
+.sd-src p { font-size: 27px; line-height: 1.35; font-weight: 700; color: var(--ink); }
+.sd-src p.t { margin-top: 16px; }
+.sd-src p.ua { font-size: 23px; font-weight: 500; color: #8a97a8; margin-top: 2px; }
 .split { display: grid; grid-template-columns: 1fr 640px; gap: 60px; align-items: start; }
 .linexp { width: 100%; height: auto; overflow: visible; }
 .linexp .ax { stroke: #c7d4e5; stroke-width: 3; }
@@ -237,17 +239,6 @@ b, strong { font-weight: 800; color: var(--ink); }
 .linexp .lin { fill: none; stroke: var(--muted); stroke-width: 4; stroke-dasharray: 14 12; }
 .linexp .lg { font-size: 26px; font-weight: 700; fill: var(--muted); }
 .linexp .lg.e { fill: var(--accent); }
-
-/* ---------- Швидкість: ріст на лінійній і логарифмічній шкалі ---------- */
-.growth .mode { font-size: 28px; font-weight: 700; color: var(--ink); margin: 8px 0 4px; min-height: 40px; }
-.growth svg { width: 100%; height: auto; }
-.growth .bar { fill: var(--navy); }
-.growth .bar.last { fill: var(--accent); }
-.growth .bv { font-size: 22px; font-weight: 800; fill: var(--ink); transition: opacity .3s; }
-.growth .yr { font-size: 22px; font-weight: 600; fill: var(--muted); }
-.growth .grid { stroke: #e3eaf3; stroke-width: 2; }
-.growth .tk { font-size: 20px; font-weight: 600; fill: var(--muted); }
-.growth .ticks { transition: opacity .4s; }
 
 /* ---------- Коли: прогнози на часовій шкалі ---------- */
 .timeline { width: 100%; height: auto; margin-top: 34px; overflow: visible; }
@@ -356,6 +347,7 @@ b, strong { font-weight: 800; color: var(--ink); }
 .loops .glows .h { fill: #ffa060; }
 .loops .glows .lit { opacity: 1; }
 .loops .cap { font-size: 28px; font-weight: 800; fill: var(--ink); }
+.loops .dif { font-size: 25px; font-weight: 600; fill: var(--muted); }
 .loops .loop { transition: opacity .5s; }
 
 /* ---------- Процес з кроками ---------- */
@@ -448,30 +440,7 @@ b, strong { font-weight: 800; color: var(--ink); }
 .bars.icons li::before { display: none; }
 .bars.icons li .ico { position: absolute; left: 0; top: .05em; width: 46px; height: 46px; }
 
-/* Вікна чату й термінала агента */
-.duo { display: flex; flex-direction: column; gap: 26px; }
-.win { background: #fff; border: 2px solid var(--line); border-radius: 12px; box-shadow: 0 16px 40px rgba(14, 36, 64, .14); overflow: hidden; }
-.win-bar { display: flex; align-items: center; gap: 8px; padding: 12px 18px; background: var(--soft); }
-.win-bar i { width: 13px; height: 13px; border-radius: 50%; background: #e9453d; }
-.win-bar i:nth-child(2) { background: #f2b221; }
-.win-bar i:nth-child(3) { background: #46b35f; }
-.win-bar b { margin-left: 12px; font-size: 24px; }
-.win-body { padding: 18px 22px; }
-.win.shown .bubble { animation: bubble-in .5s var(--ease) both; animation-delay: calc(.35s + var(--k) * .9s); }
-.win-cap { padding: 0 22px 16px; font-size: 21px; line-height: 1.35; font-weight: 600; color: var(--muted); }
-.win.dark { background: #0e1a2b; border-color: #0e1a2b; }
-.win.dark .win-bar { background: #18273d; }
-.win.dark .win-bar b { color: #fff; }
-.win.shown .term .ln { animation: typing .7s steps(28, end) both; animation-delay: calc(.45s + var(--k) * .85s); }
-.chat .bubble { max-width: 84%; font-size: 22px; line-height: 1.35; padding: 12px 18px; border-radius: 18px; margin-bottom: 12px; }
-.chat .me { margin-left: auto; background: var(--navy); color: #fff; border-bottom-right-radius: 4px; }
-.chat .ai { background: var(--soft); color: var(--ink); border-bottom-left-radius: 4px; }
 @keyframes bubble-in { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
-.term { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-size: 23px; line-height: 1.6; color: #cfe0f5; }
-.term .ln { white-space: nowrap; overflow: hidden; width: 0; }
-.term .ln.err { color: #ff8a7a; }
-.term .ln.ok { color: #7fd99a; }
-@keyframes typing { from { width: 0; } to { width: 100%; } }
 
 /* Плитки «що робила людина» і підпис, що малюється */
 .tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 22px; }
@@ -483,13 +452,6 @@ b, strong { font-weight: 800; color: var(--ink); }
 .sign { position: absolute; right: 26px; bottom: 8px; width: 280px; height: 84px; fill: none; stroke: var(--navy); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
 .sign path { stroke-dasharray: 1000; stroke-dashoffset: 1000; transition: stroke-dashoffset 1.8s ease .6s; }
 .callout.shown .sign path { stroke-dashoffset: 0; }
-
-/* Фото людей */
-.person { display: flex; gap: 40px; align-items: flex-start; }
-.person img { flex: none; width: 300px; height: 380px; object-fit: cover; border-radius: 10px; }
-.person .txt { font-size: 32px; line-height: 1.45; }
-.person .txt b { display: block; font-size: 38px; margin-bottom: 10px; }
-.person .src { font-size: 16px; color: #8a97a8; margin-top: 14px; line-height: 1.35; }
 
 /* Фінальний слайд */
 .s-end { display: flex; align-items: center; gap: 90px; padding-left: 160px; }
@@ -546,26 +508,6 @@ b, strong { font-weight: 800; color: var(--ink); }
 .dr-card.shown .rep { animation: bubble-in .5s var(--ease) both; animation-delay: 1.8s; }
 .dr-card.shown .dr-mock .bubble { animation: bubble-in .5s var(--ease) both; animation-delay: 1.4s; }
 .dr-card.shown .dr-mock .bubble + .bubble { animation-delay: 2.1s; }
-
-/* ---------- Що бачить модель, те бачить провайдер ---------- */
-.flowdata { display: grid; grid-template-columns: 1fr 340px 1fr; align-items: stretch; }
-.fd-box { background: var(--soft); border-radius: 12px; border-top: 7px solid var(--navy); padding: 24px 30px; min-height: 430px; }
-.fd-box.cloud { border-top-color: var(--accent); }
-.fd-box > b { display: block; font-size: 32px; margin: 8px 0 14px; }
-.ico.big { width: 60px; height: 60px; }
-.fd-items span, .fd-keep span { display: block; font-size: 23px; line-height: 1.35; background: #fff; border: 2px solid var(--line); border-radius: 8px; padding: 9px 14px; margin-bottom: 10px; }
-.fd-keep span b { color: var(--accent); }
-.fd-local { display: flex; gap: 12px; align-items: flex-start; margin-top: 14px; font-size: 21px; line-height: 1.4; color: var(--muted); }
-.fd-local .ico { flex: none; width: 34px; height: 34px; }
-.fd-train { margin-top: 12px; font-size: 21px; line-height: 1.4; }
-.fd-pipe { position: relative; }
-.fd-pipe::before { content: ''; position: absolute; left: 24px; right: 34px; top: 50%; height: 6px; margin-top: -3px; background: #c7d4e5; border-radius: 3px; }
-.fd-pipe::after { content: ''; position: absolute; right: 14px; top: 50%; margin-top: -14px; border: 14px solid transparent; border-left: 22px solid #c7d4e5; border-right: 0; }
-.fd-pipe i { position: absolute; left: 24px; top: 50%; width: 16px; height: 16px; margin-top: -8px; border-radius: 50%; background: var(--accent); animation: packet 2.4s linear infinite; }
-.fd-pipe i:nth-child(2) { animation-delay: .8s; }
-.fd-pipe i:nth-child(3) { animation-delay: 1.6s; }
-@keyframes packet { from { left: 24px; opacity: 0; } 10%, 90% { opacity: 1; } to { left: calc(100% - 56px); opacity: 0; } }
-.fd-pipe span { position: absolute; left: 10px; right: 10px; top: calc(50% + 24px); text-align: center; font-size: 20px; font-weight: 700; line-height: 1.35; color: var(--muted); }
 
 /* Підсумки: п'ять високих карток; велика світла цифра, значок малюється, коли картка з'являється */
 .sum-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 28px; height: 590px; }
@@ -683,12 +625,12 @@ b, strong { font-weight: 800; color: var(--ink); }
 .ctx-tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
 .ctx-tools span { background: #fff; border: 2px solid var(--line); border-top: 5px solid var(--navy); border-radius: 8px; padding: 10px 14px; font-size: 19px; line-height: 1.35; }
 .ctx-tools b { display: block; font-size: 22px; color: var(--ink); margin-bottom: 2px; }
-/* ← →: вікно переповнюється, потім стиснення згортає історію й вивід команд */
-.slide[data-fxs="1"] .cw { border-color: var(--red); animation: cw-full 1.2s ease-in-out infinite; }
-.slide[data-fxs="1"] .cw .s-tools { width: 22%; }
-.slide[data-fxs="1"] .cw .s-hist { width: calc(42% - 21px); }
-.slide[data-fxs="2"] .cw .s-tools { width: 5%; }
-.slide[data-fxs="2"] .cw .s-hist { width: 7%; background: repeating-linear-gradient(45deg, var(--accent) 0 6px, #f8b48c 6px 12px); }
+/* З появою вікна контексту воно саме переповнюється, потім стиснення згортає історію й вивід команд (стан ставить fx.js у data-cw) */
+.slide[data-cw="full"] .cw { border-color: var(--red); animation: cw-full 1.2s ease-in-out infinite; }
+.slide[data-cw="full"] .cw .s-tools { width: 22%; }
+.slide[data-cw="full"] .cw .s-hist { width: calc(42% - 21px); }
+.slide[data-cw="compact"] .cw .s-tools { width: 5%; }
+.slide[data-cw="compact"] .cw .s-hist { width: 7%; background: repeating-linear-gradient(45deg, var(--accent) 0 6px, #f8b48c 6px 12px); }
 @keyframes cw-full { 50% { box-shadow: 0 0 0 8px rgba(233, 69, 61, .25); } }
 
 /* ---------- Команди керування агентом ---------- */
@@ -708,11 +650,7 @@ code { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-we
 .cmd-note img { flex: none; height: 34px; }
 .cmd-note code { font-size: 24px; }
 
-/* ---------- Принципи безпеки роботи з даними ---------- */
-.sens { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.sens b { font-size: 25px; color: var(--ink); margin-right: 6px; }
-.sens span { font-size: 20px; font-weight: 700; color: var(--navy); background: #fff; border: 2px solid var(--line); border-radius: 30px; padding: 6px 15px; }
-.sens.shown span { animation: bubble-in .4s var(--ease) both; animation-delay: calc(.3s + var(--k) * .15s); }
+/* ---------- Що бачить модель, те бачить провайдер: код до даних ---------- */
 .c2d { display: grid; grid-template-columns: 1fr 70px 2.35fr 70px .8fr; align-items: stretch; margin-top: 30px; }
 .c2d-node { background: #fff; border: 2px solid var(--line); border-top: 6px solid var(--accent); border-radius: 8px; padding: 12px 16px; font-size: 20px; line-height: 1.35; }
 .c2d-node b { display: block; font-size: 25px; color: var(--ink); margin-bottom: 2px; }
@@ -725,10 +663,3 @@ code { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-we
 .c2d.shown .c2d-arr::before { background: linear-gradient(90deg, #c7d4e5 0 40%, var(--accent) 40% 60%, #c7d4e5 60%) 0 0 / 300% 100%; animation: c2d-flow 1.6s linear infinite; animation-delay: calc(var(--k) * .5s); }
 @keyframes c2d-flow { from { background-position: 100% 0; } to { background-position: 0 0; } }
 .c2d.shown > .c2d-node, .c2d.shown > .c2d-zone { animation: tile-in .45s var(--ease) both; animation-delay: calc(.15s + var(--k) * .35s); }
-.lv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 22px; }
-.lv { background: var(--soft); border-top: 6px solid var(--navy); border-radius: 10px; padding: 16px 20px 18px; }
-.lv-h { display: flex; align-items: center; gap: 12px; }
-.lv-h .ico { flex: none; width: 42px; height: 42px; }
-.lv-h b { font-size: 25px; line-height: 1.2; color: var(--ink); }
-.lv .prac { display: inline-block; margin-top: 8px; font-size: 15px; font-weight: 700; line-height: 1.3; color: #fff; background: var(--accent); padding: 3px 10px; border-radius: 20px; }
-.lv p { margin-top: 8px; font-size: 20px; line-height: 1.38; }

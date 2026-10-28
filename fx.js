@@ -2,9 +2,8 @@
  * Анімації та ефекти слайдів. Зміст показують стрілки ↓ ↑ (app.js), а тут — те, що рухається:
  *   фонова «мережа» на першому й останньому слайдах;
  *   питання, що з'являється слово за словом;
- *   графіки, які малюються на кроці або перемикаються стрілками ← →;
+ *   графіки, які малюються на кроці, й анімації, що грають самі, поки на слайді видно їхню картинку;
  *   крапка, що біжить по кільцях циклів і підсвічує блоки.
- * Ефекти, яким досить CSS, вмикає атрибут data-fxs на слайді (його ставить app.js).
  * Скрипт підключено перед app.js, щоб ефекти встигли підписатися на події слайдів.
  */
 (() => {
@@ -48,6 +47,21 @@
     slide.addEventListener('step', (e) => {
       paths.forEach((p) => { p.style.strokeDashoffset = e.detail.step >= k ? 0 : p.dataset.len; });
     });
+  }
+
+  // Анімація, що грає сама: з кроку k0 tick() викликається кожні 2,5 с, доки не повернемося назад чи не підемо зі слайда; тоді reset().
+  function autoplay(slide, k0, tick, reset) {
+    let timer = 0;
+    const stop = () => {
+      clearInterval(timer);
+      timer = 0;
+      reset();
+    };
+    slide.addEventListener('step', (e) => {
+      if (e.detail.step < k0) stop();
+      else if (!timer) timer = setInterval(tick, 2500);
+    });
+    slide.addEventListener('leave', stop);
   }
 
   // ---------- Фонова мережа: вузли повільно дрейфують, близькі з'єднуються лініями ----------
@@ -172,76 +186,6 @@
     drawOnStep(svg.closest('.slide'), [exp]);
   })();
 
-  // ---------- Ріст ×4,7 щороку на лінійній і логарифмічній шкалі ----------
-  (() => {
-    const panel = $('#s-growth .growth');
-    if (!panel) return;
-    const svg = $('svg', panel);
-    const mode = $('.mode', panel);
-    const vals = Array.from({ length: 11 }, (_, i) => 4.7 ** i);
-    const vmax = vals[10];
-    const X0 = 170;
-    const X1 = 1620;
-    const B = 480;
-    const H = 410;
-    const bw = 86;
-    const gap = (X1 - X0 - bw * 11) / 10;
-    const bx = (i) => X0 + i * (bw + gap);
-    const hLin = (v) => v / vmax * H;
-    const hLog = (v) => (Math.log10(v) + 0.5) / (Math.log10(vmax) + 0.5) * H;
-    const short = (v) => {
-      if (v < 10) return fmt(v, v % 1 ? 1 : 0);
-      if (v < 1e3) return fmt(v, 0);
-      if (v < 1e6) return `${fmt(v / 1e3, v < 1e5 ? 1 : 0)} тис.`;
-      return `${fmt(v / 1e6, 1)} млн`;
-    };
-    const gLin = svgEl('g', { class: 'ticks' }, svg);
-    const gLog = svgEl('g', { class: 'ticks' }, svg);
-    [[0, '0'], [1e6, '1 млн'], [2e6, '2 млн'], [3e6, '3 млн'], [4e6, '4 млн'], [5e6, '5 млн']].forEach(([v, t]) => {
-      const y = B - hLin(v);
-      svgEl('line', { class: 'grid', x1: X0 - 20, y1: y, x2: X1, y2: y }, gLin);
-      svgEl('text', { class: 'tk', x: X0 - 30, y: y + 7, 'text-anchor': 'end' }, gLin, t);
-    });
-    [[1, '1'], [10, '10'], [100, '100'], [1e3, '1 тис.'], [1e4, '10 тис.'], [1e5, '100 тис.'], [1e6, '1 млн']].forEach(([v, t]) => {
-      const y = B - hLog(v);
-      svgEl('line', { class: 'grid', x1: X0 - 20, y1: y, x2: X1, y2: y }, gLog);
-      svgEl('text', { class: 'tk', x: X0 - 30, y: y + 7, 'text-anchor': 'end' }, gLog, t);
-    });
-    const bars = vals.map((_, i) => svgEl('rect', { class: i === 10 ? 'bar last' : 'bar', x: bx(i), y: B, width: bw, height: 0, rx: 6 }, svg));
-    const labels = vals.map((v, i) => svgEl('text', { class: 'bv', x: bx(i) + bw / 2, y: B - 10, 'text-anchor': 'middle', style: 'opacity:0' }, svg, short(v)));
-    vals.forEach((_, i) => svgEl('text', { class: 'yr', x: bx(i) + bw / 2, y: B + 36, 'text-anchor': 'middle' }, svg, String(2015 + i)));
-    // Графік з'являється своїм кроком ↓ і виростає; ← → лише перемикають шкалу тих самих даних.
-    const slide = panel.closest('.slide');
-    const k0 = +panel.dataset.step;
-    let shown = false;
-    let log = false;
-    function render() {
-      const h = shown ? (log ? hLog : hLin) : () => 0;
-      gLin.style.opacity = shown && !log ? 1 : 0;
-      gLog.style.opacity = shown && log ? 1 : 0;
-      mode.textContent = `${log ? 'Логарифмічна' : 'Лінійна'} шкала · 2015 = 1`;
-      vals.forEach((v, i) => {
-        const bh = h(v);
-        tween(bars[i], { y: B - bh, height: bh });
-        tween(labels[i], { y: B - bh - 10 });
-        labels[i].style.opacity = bh > 26 ? 1 : 0;
-      });
-    }
-    slide.addEventListener('step', (e) => {
-      const on = e.detail.step >= k0;
-      if (on !== shown) {
-        shown = on;
-        render();
-      }
-    });
-    slide.addEventListener('fx', (e) => {
-      if (log !== (e.detail.fx === 1)) {
-        log = e.detail.fx === 1;
-        render();
-      }
-    });
-  })();
-
   // ---------- Поради: що таке «характерний час експоненти» ----------
   (() => {
     const svg = $('#s-advice svg.exp');
@@ -270,8 +214,9 @@
     svgEl('text', { class: 'bl', x: X0, y: R1 - 12 }, svg, 'Почати зараз сьогоднішніми інструментами');
     svgEl('rect', { class: 'b-now', x: x(0), y: R1, width: x(W) - x(0), height: BH, rx: 5 }, svg);
     svgEl('text', { class: 'bf', x: x(W) + 10, y: R1 + 23 }, svg, '24 міс.');
-    // Рядок «почекати» — наступний крок ↓; ← → лише пересувають час очікування на графіку.
-    const row2 = svgEl('g', { class: 'row2', 'data-step': +svg.closest('[data-step]').dataset.step + 1, 'data-anim': 'fade' }, svg);
+    // Рядок «почекати» з'являється разом із графіком, і час очікування сам перебирає 6, 9 і 12 місяців, доки не підемо зі слайда.
+    const k0 = +svg.closest('[data-step]').dataset.step;
+    const row2 = svgEl('g', { class: 'row2', 'data-step': k0, 'data-anim': 'fade' }, svg);
     const mark = svgEl('line', { class: 'mark', x1: x(0), y1: Y0, x2: x(0), y2: Y1 }, row2);
     const markT = svgEl('text', { class: 'mark-t', x: x(0), y: Y1 - 22, 'text-anchor': 'middle' }, row2, 'старт');
     svgEl('text', { class: 'bl', x: X0, y: R2 - 12 }, row2, 'Почекати й зробити новою моделлю');
@@ -281,7 +226,7 @@
     svgEl('text', { class: 'cap', x: X0, y: 480 }, svg, 'Умовно: з кожним подвоєнням ту саму роботу можна зробити вдвічі швидше');
     const slide = svg.closest('.slide');
     drawOnStep(slide, [curve]);
-    const waits = [6, 9, 12]; // місяців очікування: крок показує пів року, ← → — 9 і 12 місяців
+    const waits = [6, 9, 12]; // місяців очікування
     function setWait(n, animate) {
       const end = n + W / 2 ** (n / T);
       fin2.textContent = `${fmt(end, end % 1 ? 1 : 0)} міс.`;
@@ -293,10 +238,32 @@
       set(markT, { x: x(n) });
     }
     setWait(waits[0], false);
-    slide.addEventListener('fx', (e) => setWait(waits[e.detail.fx], true));
+    let i = 0;
+    autoplay(slide, k0, () => {
+      i = (i + 1) % waits.length;
+      setWait(waits[i], true);
+    }, () => {
+      i = 0;
+      setWait(waits[0], false);
+    });
   })();
 
-  // ---------- «Хто крутить цикл»: крапка біжить по кільцю під блоками, і блок над нею світиться ----------
+  // ---------- «Від промпту до контексту»: з появою вікна контексту воно переповнюється, а стиснення звільняє місце ----------
+  (() => {
+    const slide = $('#s-context');
+    if (!slide) return;
+    const states = ['', 'full', 'compact'];
+    let i = 0;
+    autoplay(slide, +$('.cw', slide).closest('[data-step]').dataset.step, () => {
+      i = (i + 1) % states.length;
+      slide.dataset.cw = states[i];
+    }, () => {
+      i = 0;
+      slide.dataset.cw = '';
+    });
+  })();
+
+  // ---------- «Хто обертає цикл»: крапка біжить по кільцю під блоками, і блок над нею світиться ----------
   (() => {
     const slide = $('#s-loops');
     if (!slide) return;
