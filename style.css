@@ -591,12 +591,43 @@ b, strong { font-weight: 800; color: var(--ink); }
 .r-steps em { font-style: normal; font-size: 22px; font-weight: 600; color: #9fb6d3; margin-top: 6px; }
 .route.shown .r-steps span { animation: tile-in .45s var(--ease) both; animation-delay: calc(.2s + var(--k) * .1s); }
 
+/* ---------- Задача практики: три слайди в стилі слайда «Практика» ---------- */
+/* Шкала часу: пунктир — потрібний ряд, помаранчевий відрізок — наявні вимірювання */
+.tk-time { position: relative; height: 230px; margin-top: 70px; }
+.tk-need { position: absolute; left: 0; width: 99%; top: 100px; height: 64px; border: 3px dashed rgba(255, 255, 255, .55); border-radius: 10px; }
+.tk-need span { display: block; padding-left: 24px; line-height: 58px; font-size: 26px; font-weight: 700; color: #d6e1ef; }
+.tk-have { position: absolute; top: 100px; height: 64px; background: var(--accent); border-radius: 8px; box-shadow: 0 8px 24px rgba(242, 107, 33, .35); }
+.tk-have span { position: absolute; bottom: 100%; left: 50%; margin-bottom: 12px; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 24px; font-weight: 800; line-height: 1.3; color: #fff; }
+.tk-years { position: absolute; left: 0; right: 0; top: 186px; }
+.tk-years i { position: absolute; font-style: normal; font-size: 24px; font-weight: 600; color: #9fb6d3; }
+.tk-years i::before { content: ''; position: absolute; left: 0; top: -14px; width: 2px; height: 10px; background: rgba(255, 255, 255, .45); }
+.tk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 60px; }
+.tk-card { background: rgba(255, 255, 255, .08); border: 2px solid rgba(255, 255, 255, .18); border-radius: 12px; padding: 22px 28px; }
+.tk-card b { display: block; margin-bottom: 8px; font-size: 22px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.tk-card span { font-size: 30px; font-weight: 700; line-height: 1.3; color: #fff; }
+/* Обмеження → як обходимо */
+.tk-heads, .tk-pair { display: grid; grid-template-columns: 1fr 64px 1fr; }
+.tk-heads { margin-top: 40px; margin-bottom: 12px; }
+.tk-heads span { font-size: 22px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #9fb6d3; }
+.tk-heads span:last-child { grid-column: 3; color: var(--accent); }
+.tk-pairs { display: grid; gap: 14px; }
+.tk-lim, .tk-fix { display: flex; align-items: center; border-radius: 12px; padding: 16px 24px; font-size: 26px; font-weight: 700; line-height: 1.3; }
+.tk-lim { background: rgba(255, 255, 255, .06); border: 2px solid rgba(255, 255, 255, .16); color: #d6e1ef; }
+.tk-fix { background: rgba(242, 107, 33, .16); border: 2px solid rgba(242, 107, 33, .55); color: #fff; }
+.tk-pair > i { position: relative; }
+.tk-pair > i::before { content: ''; position: absolute; left: 10px; right: 18px; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px; background: var(--accent); }
+.tk-pair > i::after { content: ''; position: absolute; right: 6px; top: 50%; margin-top: -9px; border: 9px solid transparent; border-left: 14px solid var(--accent); }
+/* Що це має дати */
+.tk-gains { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 70px; }
+.tk-gain { display: flex; align-items: center; gap: 28px; background: rgba(255, 255, 255, .08); border: 2px solid rgba(255, 255, 255, .18); border-radius: 12px; padding: 46px 34px; font-size: 32px; font-weight: 700; line-height: 1.3; color: #fff; }
+.tk-gain .ico { flex: none; width: 72px; height: 72px; }
+
 /* ---------- Агентний flow і агентний loop ---------- */
 .fl-defs { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 26px; }
 .fl-def { display: flex; gap: 18px; align-items: center; font-size: 25px; line-height: 1.38; font-weight: 500; }
 .fl-def b { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 112px; height: 56px; padding: 0 18px; border-radius: 10px; background: var(--navy); color: #fff; font-size: 28px; font-weight: 800; }
 .fl-def.loop b { background: var(--accent); }
-.fl-row { display: grid; grid-template-columns: repeat(8, 1fr); gap: 24px; }
+.fl-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 24px; }
 .fl-step { position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 104px; background: var(--soft); border: 2px solid var(--line); border-radius: 10px; padding: 12px 10px 12px 54px; font-size: 21px; font-weight: 700; line-height: 1.2; color: var(--ink); }
 .fl-step:not(:last-child)::after { content: ''; position: absolute; right: -21px; top: 50%; margin-top: -9px; border: 9px solid transparent; border-left: 13px solid #9fb6d3; }
 .fl-step i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); font-style: normal; font-size: 18px; font-weight: 800; color: #fff; }

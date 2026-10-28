@@ -429,7 +429,7 @@
           <div class="bubble me" style="--k:0">Як розрахувати природну вологість повітря з температури, вологості й тиску?</div>
           <div class="bubble ai" style="--k:1">Ось формула й пояснення кожного члена</div>
         </div>
-        <div class="win-cap">На практиці в чаті з'ясуємо методику розрахунку вологості</div>
+        <div class="win-cap">На практиці методику з'ясуємо в чаті за документом — RAG</div>
       </div>
       <div class="win dark" data-step="6" data-anim="right">
         <div class="win-bar"><i></i><i></i><i></i><b>Агент — для роботи з файлами й даними</b></div>
@@ -456,14 +456,13 @@
     <div class="fl-def loop" data-step="2"><b>Loop</b><span>цикл усередині кроку: модель сама обирає наступну дію й інструмент — у межах дозволів</span></div>
   </div>
   <div class="fl-row" data-step="1">
-    <div class="fl-step" style="--k:0"><i>1</i><b>Область</b><em>чат</em></div>
-    <div class="fl-step" style="--k:1"><i>2</i><b>Глибокий пошук</b><em>чат</em></div>
-    <div class="fl-step" style="--k:2"><i>3</i><b>Перевірка</b><em>чат</em></div>
-    <div class="fl-step ag" style="--k:3"><i>4</i><b>Завдання</b><em>агент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
-    <div class="fl-step ag" style="--k:4"><i>5</i><b>Виконання</b><em>агент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
+    <div class="fl-step" style="--k:0"><i>1</i><b>Методика</b><em>глибокий пошук і RAG</em></div>
+    <div class="fl-step ag" style="--k:1"><i>2</i><b>Знеособлення</b><em>агент + людина</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
+    <div class="fl-step ag" style="--k:2"><i>3</i><b>Надані дані</b><em>агент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
+    <div class="fl-step ag" style="--k:3"><i>4</i><b>Відкриті дані</b><em>агент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
+    <div class="fl-step ag" style="--k:4"><i>5</i><b>Модель</b><em>агент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
     <div class="fl-step ag" style="--k:5"><i>6</i><b>Рецензія</b><em>рецензент</em><span class="fl-loop" data-step="2" data-anim="zoom"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></svg></span></div>
-    <div class="fl-step" style="--k:6"><i>7</i><b>Візуалізація</b><em>людина</em></div>
-    <div class="fl-step" style="--k:7"><i>8</i><b>Висновки</b><em>людина</em></div>
+    <div class="fl-step" style="--k:6"><i>7</i><b>Висновки</b><em>людина</em></div>
   </div>
   <div class="fl-stop" data-step="3">
     <div class="fl-stop-head">Після кожного оберту агент перевіряє критерії приймання. Виходів три, і умови задаємо до старту:</div>
@@ -473,7 +472,7 @@
       <div class="stop"><svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg><div><b>Вичерпано спроби, бюджет чи час — або потрібен дозвіл</b>зупинка, рішення за людиною</div></div>
     </div>
   </div>
-  <div class="callout" data-step="4" style="margin-top:28px;">Починайте з найпростішого: агентність — лише там, де вона виправдана. Наш метод — flow із 8 кроків, а loop крутиться лише всередині агентних.</div>
+  <div class="callout" data-step="4" style="margin-top:28px;">Починайте з найпростішого: агентність — лише там, де вона виправдана. Наш метод — flow із 7 кроків, а loop крутиться лише всередині агентних.</div>
   <div class="small" data-step="4" style="position:absolute; left:170px; bottom:34px;">Anthropic, «Building effective agents», 2024</div>
   <img class="logo" src="images/logo-mip.svg" alt="">
 </section>
@@ -493,8 +492,8 @@
       </div>
       <h3>Глибокий пошук</h3>
       <p><b>Для чого:</b> модель сама робить десятки пошуків в інтернеті, читає джерела й пише звіт з посиланнями</p>
-      <p class="risk"><b>Ризик:</b> джерела не перевірені, логічні ланцюжки слабкі — тому після нього крок 3, перевірка у звичайному режимі</p>
-      <div class="in-method">У методі: крок 2</div>
+      <p class="risk"><b>Ризик:</b> джерела не перевірені, логічні ланцюжки слабкі — тому звіт перевіряють у звичайному режимі</p>
+      <div class="in-method">У методі: крок 1</div>
     </div>
     <div class="dr-card" data-step="2">
       <div class="dr-mock">
@@ -505,7 +504,7 @@
       <h3>RAG</h3>
       <p><b>Для чого:</b> відповіді лише з ваших документів — інструкцій, стандартів, звітів — з посиланнями на них</p>
       <p class="risk"><b>Ризик:</b> модель візьме не той фрагмент або стару версію документа</p>
-      <div class="in-method">Приклад: Gemini Notebook, раніше NotebookLM</div>
+      <div class="in-method">У методі: крок 1 · Gemini Notebook, раніше NotebookLM</div>
     </div>
   </div>
   <div class="callout" data-step="3" style="margin-top:22px;">Глибокий пошук шукає по всьому інтернету, а RAG — лише у ваших документах.</div>
@@ -672,6 +671,53 @@
   <img class="logo" src="images/logo-mip.svg" alt="">
 </section>
 
+<!-- Задача практики, 1/3: що шукаємо і навіщо. Шкала 2020–2026: потрібен увесь ряд, а є лише півтора року вимірювань.
+     Шкала від 01.01.2020 до 01.01.2027: рік — 14,29 % ширини; вимірювання 01.11.2024 – 13.05.2026 — це 69,05…90,88 % -->
+<section class="slide s-section" id="s-task">
+  <div class="bg ken" style="--shade: linear-gradient(90deg, rgba(14, 36, 64, .95) 0%, rgba(14, 36, 64, .88) 60%, rgba(14, 36, 64, .74) 100%);"><img src="images/practice.png" alt=""></div>
+  <div class="label" style="margin-top:20px;">Практика · задача</div>
+  <div class="title" style="font-size:72px;">Що шукаємо і навіщо</div>
+  <div class="tk-time">
+    <div class="tk-need" data-step="1" data-anim="fade"><span>Потрібно: природна вологість щодня — з 2020 року до сьогодні</span></div>
+    <div class="tk-years" data-step="1" data-anim="fade"><i style="left:0%">2020</i><i style="left:14.29%">2021</i><i style="left:28.57%">2022</i><i style="left:42.86%">2023</i><i style="left:57.14%">2024</i><i style="left:71.43%">2025</i><i style="left:85.71%">2026</i></div>
+    <div class="tk-have" data-step="2" data-anim="fade" style="left:69.05%; width:21.83%;"><span>Є: 559 діб вимірювань, нових не буде<br>01.11.2024 – 13.05.2026</span></div>
+  </div>
+  <div class="tk-row">
+    <div class="tk-card" data-step="3"><b>Навіщо</b><span>Щоб порахувати повну вологість дуття за кожен день з 2020 року й оцінити її вплив на витрату коксу й продуктивність</span></div>
+    <div class="tk-card" data-step="4"><b>Величина</b><span>Маса водяної пари в 1 м³ сухого повітря, г/м³</span></div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Задача практики, 2/3: обмеження зліва, як їх обходимо — справа -->
+<section class="slide s-section" id="s-task2">
+  <div class="bg ken" style="--shade: linear-gradient(90deg, rgba(14, 36, 64, .95) 0%, rgba(14, 36, 64, .88) 60%, rgba(14, 36, 64, .74) 100%);"><img src="images/practice.png" alt=""></div>
+  <div class="label" style="margin-top:20px;">Практика · задача</div>
+  <div class="title" style="font-size:72px;">Обмеження і як їх обходимо</div>
+  <div class="tk-heads" data-step="1" data-anim="fade"><span>Обмеження</span><span>Як обходимо</span></div>
+  <div class="tk-pairs">
+    <div class="tk-pair" data-step="1"><div class="tk-lim">Вимірювання — у закритому рапорті поруч з даними, яких агентові бачити не можна</div><i></i><div class="tk-fix">Агент пише скрипт знеособлення, людина запускає: агентові — лише дата й вологість</div></div>
+    <div class="tk-pair" data-step="2"><div class="tk-lim">Метеодані дають температуру, вологість і тиск, але не нашу величину</div><i></i><div class="tk-fix">Методику знаходимо глибоким пошуком і RAG, величину рахуємо з відкритих погодинних даних</div></div>
+    <div class="tk-pair" data-step="3"><div class="tk-lim">Вимірювань лише півтора року, літо — один раз</div><i></i><div class="tk-fix">Модель зв'язку з відкритими даними; кожен місяць вона передбачає, не бачивши його</div></div>
+    <div class="tk-pair" data-step="4"><div class="tk-lim">Агент може впевнено помилитися</div><i></i><div class="tk-fix">Окремий агент-рецензент перевіряє всю роботу, висновки підписує людина</div></div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Задача практики, 3/3: що це має дати -->
+<section class="slide s-section" id="s-task3">
+  <div class="bg ken" style="--shade: linear-gradient(90deg, rgba(14, 36, 64, .95) 0%, rgba(14, 36, 64, .88) 60%, rgba(14, 36, 64, .74) 100%);"><img src="images/practice.png" alt=""></div>
+  <div class="label" style="margin-top:20px;">Практика · задача</div>
+  <div class="title" style="font-size:72px;">Що це має дати</div>
+  <div class="tk-gains">
+    <div class="tk-gain" data-step="1"><svg class="ico" viewBox="0 0 24 24"><path d="M4 3v17h17"/><path d="M7.5 15l4-4.5 3 3L20 7"/></svg><span>Ряд вологості щодня — з 01.01.2020 до вчора</span></div>
+    <div class="tk-gain" data-step="2"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M6 8v8M18 8v8"/><circle cx="12" cy="12" r="2"/></svg><span>Межі, у яких ряду можна вірити: похибка на перевірці й інтервал прогнозу</span></div>
+    <div class="tk-gain" data-step="3"><svg class="ico" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 13h8"/></svg><span>Шлях, який можна повторити: скрипти, звіти, рисунки й рецензія — у файлах</span></div>
+    <div class="tk-gain" data-step="4"><svg class="ico" viewBox="0 0 24 24"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M13.5 6.5l3 3"/><path d="M14 20h6"/></svg><span>Висновки, які перевірила людина: що встановлено, а що лише гіпотеза</span></div>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
 <!-- Практика: тут зупиняємося і переходимо в термінал; після практики — стрілка вниз -->
 <section class="slide s-section" id="s-practice">
   <div class="bg ken" style="--shade: linear-gradient(90deg, rgba(14, 36, 64, .93) 0%, rgba(14, 36, 64, .78) 50%, rgba(14, 36, 64, .42) 100%);"><img src="images/practice.png" alt=""></div>
@@ -680,7 +726,7 @@
   <div class="lead" style="margin-top:22px; font-size:36px;">Наживо в Antigravity CLI</div>
   <div class="route" data-step="1">
     <div class="r-head">Вологість: від закритих даних до висновків</div>
-    <div class="r-steps"><span style="--k:0"><i>1</i>Глибокий пошук і RAG<em>показ: фаза дослідження</em></span><span style="--k:1"><i>2</i>Знеособлення<em>агент пише скрипт, людина запускає</em></span><span style="--k:2"><i>3</i>Методика<em>чат</em></span><span style="--k:3"><i>4</i>Дані, відкриті дані, модель<em>агент-виконавець</em></span><span style="--k:4"><i>5</i>Рецензія й виправлення<em>агент-рецензент</em></span><span style="--k:5"><i>6</i>Висновки<em>людина</em></span></div>
+    <div class="r-steps"><span style="--k:0"><i>1</i>Методика<em>глибокий пошук і RAG</em></span><span style="--k:1"><i>2</i>Знеособлення<em>агент пише скрипт, людина запускає</em></span><span style="--k:2"><i>3</i>Дані, відкриті дані, модель<em>агент-виконавець</em></span><span style="--k:3"><i>4</i>Рецензія й виправлення<em>агент-рецензент</em></span><span style="--k:4"><i>5</i>Висновки<em>людина</em></span></div>
   </div>
   <img class="logo" src="images/logo-mip.svg" alt="">
 </section>
