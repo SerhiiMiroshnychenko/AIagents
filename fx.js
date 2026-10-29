@@ -186,6 +186,16 @@
     drawOnStep(svg.closest('.slide'), [exp]);
   })();
 
+  // ---------- Слайд 4: картки лягають стосом — нова зверху, попередні відступають назад ----------
+  (() => {
+    const cards = $$('#s-sd .sd-card');
+    if (!cards.length) return;
+    cards[0].closest('.slide').addEventListener('step', (e) => {
+      const shown = cards.filter((c) => +c.dataset.step <= e.detail.step);
+      cards.forEach((c) => { c.dataset.depth = shown.includes(c) ? shown.length - 1 - shown.indexOf(c) : ''; });
+    });
+  })();
+
   // ---------- Поради: що таке «характерний час експоненти» ----------
   (() => {
     const svg = $('#s-advice svg.exp');

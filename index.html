@@ -101,26 +101,29 @@
   <img class="logo boxed" src="images/logo-mip.svg" alt="">
 </section>
 
-<!-- Виступ Sohl-Dickstein: разом із головною думкою малюється експонента поруч із лінійним продовженням -->
+<!-- Виступ Sohl-Dickstein: три картки лягають стосом (нова зверху, попередні відступають назад), далі разом із головною думкою малюється експонента поруч із лінійним продовженням -->
 <section class="slide" id="s-sd">
   <div class="label">Що кажуть дослідники ШІ</div>
   <div class="title">Jascha Sohl-Dickstein, Anthropic</div>
   <div class="rule"></div>
   <div class="split" style="grid-template-columns:1fr 560px;">
     <div>
-      <div class="sd-text">
-        <p>У 2026 році відбулася чергова
+      <div class="sd-stack">
+        <div class="sd-card" data-step="1"><span class="sd-tag">1 · Конференція</span>
+          <p>У 2026 році відбулася чергова</p>
           <b>International Conference on Learning Representations</b>
-          <span class="ua">(одна з найбільших конференцій машинного навчання)</span></p>
-        <p>На воркшопі
+          <p class="ua">(одна з найбільших конференцій машинного навчання)</p></div>
+        <div class="sd-card" data-step="2"><span class="sd-tag">2 · Доповідач</span>
+          <p>На воркшопі</p>
           <b>«Наука й суспільство після AGI»</b>
-          виступив <span class="ua">американський дослідник у галузі машинного навчання, нейронауки та статистичної фізики, автор дифузійних моделей, на яких працюють сучасні генератори зображень,</span> —
-          <b>Яша Золь-Дікштайн</b></p>
-        <p>Його виступ
+          <p>виступив <span class="ua">американський дослідник у галузі машинного навчання, нейронауки та статистичної фізики, автор дифузійних моделей, на яких працюють сучасні генератори зображень,</span> —</p>
+          <b>Яша Золь-Дікштайн</b></div>
+        <div class="sd-card" data-step="3"><span class="sd-tag">3 · Доповідь</span>
+          <p>Його виступ</p>
           <b>«Advice for a (young) investigator in the first and last days of the Anthropocene»</b>
-          <span class="ua">(«Поради (молодому) досліднику в перші й останні дні антропоцену»)</span> справив велике враження на аудиторію та викликав великий резонанс.</p>
+          <p><span class="ua">(«Поради (молодому) досліднику в перші й останні дні антропоцену»)</span> справив велике враження на аудиторію та викликав великий резонанс.</p></div>
       </div>
-      <div class="quote" data-step="1" style="margin-top:30px; font-size:40px;">Майбутнє не буде лінійним продовженням теперішнього. Рішення про кар'єру й проєкти варто ухвалювати з урахуванням цього»</div>
+      <div class="quote" data-step="4" style="margin-top:36px; font-size:40px;">Майбутнє не буде лінійним продовженням теперішнього. Рішення про кар'єру й проєкти варто ухвалювати з урахуванням цього»</div>
     </div>
     <svg class="linexp" viewBox="0 0 640 540">
       <line class="ax" x1="40" y1="480" x2="625" y2="480"/>
@@ -128,7 +131,7 @@
       <line class="now" x1="270" y1="30" x2="270" y2="480"/>
       <text class="lbl-now" x="270" y="516" text-anchor="middle">сьогодні</text>
       <path class="past"/>
-      <g class="fut" data-step="1" data-anim="fade">
+      <g class="fut" data-step="4" data-anim="fade">
         <path class="lin"/>
         <path class="exp"/>
         <line class="lin" x1="62" y1="52" x2="122" y2="52"/>
@@ -139,8 +142,8 @@
     </svg>
   </div>
   <div class="notes">
-    <p>Антропоцен — епоха, у якій світ змінює людина; доповідач припускає, що вона може бути дуже короткою.</p>
-    <p data-step="1" data-anim="fade">До сьогодні експонента майже не відрізняється від прямої — тому так легко помилитися.</p>
+    <p data-step="3" data-anim="fade">Антропоцен — епоха, у якій світ змінює людина; доповідач припускає, що вона може бути дуже короткою.</p>
+    <p data-step="4" data-anim="fade">До сьогодні експонента майже не відрізняється від прямої — тому так легко помилитися.</p>
   </div>
   <img class="logo" src="images/logo-mip.svg" alt="">
 </section>

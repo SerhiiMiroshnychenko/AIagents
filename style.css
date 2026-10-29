@@ -222,12 +222,19 @@ b, strong { font-weight: 800; color: var(--ink); }
 .question { font-size: 84px; line-height: 1.15; font-weight: 800; color: var(--ink); max-width: 1600px; margin-top: 30px; }
 
 /* ---------- Виступ Sohl-Dickstein: лінійне продовження проти експоненти ---------- */
-/* Слайд 4: розповідь про доповідь; головне — жирним, крупно й окремим рядком, звичайний текст дрібно, другорядне — сірим */
+/* Слайд 4: картки лягають стосом — нова зверху, попередні відступають назад, і з них видно лише ярлик (глибину ставить fx.js у data-depth).
+   У картці головне — жирним, крупно й окремим рядком, звичайний текст дрібно, другорядне — сірим */
 .ua { color: #8a97a8; font-weight: 500; }
-.sd-text p { font-size: 21px; line-height: 1.45; font-weight: 500; color: var(--text); }
-.sd-text p + p { margin-top: 16px; }
-.sd-text b { display: block; margin: 2px 0; font-size: 31px; line-height: 1.25; font-weight: 800; color: var(--ink); }
-.sd-text .ua { font-size: 20px; }
+.sd-stack { position: relative; height: 396px; }
+.sd-card { position: absolute; left: 0; right: 0; top: 100px; min-height: 290px; background: #fff; border: 2px solid var(--line); border-top: 7px solid var(--accent); border-radius: 10px; padding: 16px 34px 22px; box-shadow: 0 14px 34px rgba(14, 36, 64, .14); transform-origin: 50% 0; }
+.sd-card.shown[data-depth="1"] { transform: translateY(-50px) scale(.95); }
+.sd-card.shown[data-depth="2"] { transform: translateY(-100px) scale(.9); }
+.sd-card > * { transition: opacity .55s ease; }
+.sd-card[data-depth="1"] > *, .sd-card[data-depth="2"] > * { opacity: .5; }
+.sd-tag { display: block; margin-bottom: 10px; font-size: 18px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.sd-card p { font-size: 22px; line-height: 1.45; font-weight: 500; color: var(--text); }
+.sd-card b { display: block; margin: 4px 0 6px; font-size: 32px; line-height: 1.25; font-weight: 800; color: var(--ink); }
+.sd-card .ua { font-size: 21px; }
 .split { display: grid; grid-template-columns: 1fr 640px; gap: 60px; align-items: start; }
 .linexp { width: 100%; height: auto; overflow: visible; }
 .linexp .ax { stroke: #c7d4e5; stroke-width: 3; }
