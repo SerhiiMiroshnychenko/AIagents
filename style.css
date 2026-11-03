@@ -460,10 +460,10 @@ b, strong { font-weight: 800; color: var(--ink); }
 .sign path { stroke-dasharray: 1000; stroke-dashoffset: 1000; transition: stroke-dashoffset 1.8s ease .6s; }
 .callout.shown .sign path { stroke-dashoffset: 0; }
 
-/* Мем «Результати вайбкодингу»: таблиця 2×2, літаки з'являються по одному; тло комірки — як тло рисунків */
-.vibe { display: grid; grid-template-columns: 290px 1fr 1fr; grid-template-rows: 60px 1fr 1fr; gap: 16px 24px; height: 720px; }
+/* Мем «Результати використання ШІ-агентів»: таблиця 2×2, літаки з'являються по одному; тло комірки — як тло рисунків */
+.vibe { display: grid; grid-template-columns: 340px 1fr 1fr; grid-template-rows: 60px 1fr 1fr; gap: 16px 24px; height: 720px; }
 .vibe .vc { align-self: end; padding-bottom: 10px; border-bottom: 4px solid var(--accent); font-size: 32px; font-weight: 800; color: var(--ink); text-align: center; }
-.vibe .vr { align-self: center; padding-right: 18px; border-right: 4px solid var(--accent); font-size: 32px; line-height: 1.2; font-weight: 800; color: var(--navy); text-align: right; }
+.vibe .vr { align-self: center; padding-right: 18px; border-right: 4px solid var(--accent); font-size: 28px; line-height: 1.25; font-weight: 800; color: var(--navy); text-align: right; }
 .vibe .vi { display: flex; justify-content: center; overflow: hidden; background: #f7f1ee; border-radius: 12px; }
 .vibe .vi img { height: 100%; width: auto; transform: scale(1.18); }
 
