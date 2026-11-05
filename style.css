@@ -720,6 +720,11 @@ code { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-we
   .tk-fix:hover { background-color: rgba(242, 107, 33, .3); border-color: var(--accent); box-shadow: 0 18px 40px rgba(0, 0, 0, .3); }
   /* Плитки обв'язки: лише колір і тінь, без руху */
   .h-tile:hover { background-color: #fff4ec; box-shadow: 0 12px 28px rgba(14, 36, 64, .14); }
+  /* Рядки таблиці команд: як світлі картки — рядок піднімається, клітинки біліють, з'являється тінь */
+  .table.cmd tr[data-step] { transition: opacity .55s ease, transform .55s var(--ease), translate .25s ease, scale .25s ease, box-shadow .25s ease; }
+  .table.cmd tr[data-step] td { transition: background-color .25s ease; }
+  .table.cmd tr[data-step]:hover { translate: 0 var(--hover-lift); scale: var(--hover-grow); box-shadow: 0 18px 40px rgba(14, 36, 64, .16); }
+  .table.cmd tr[data-step]:hover td { background-color: #fff; }
 }
 /* «Менше руху» в системі: лишається тільки зміна кольору */
 @media (prefers-reduced-motion: reduce) {
