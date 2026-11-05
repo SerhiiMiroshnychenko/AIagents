@@ -434,8 +434,9 @@ b, strong { font-weight: 800; color: var(--ink); }
 .mock-notes { position: relative; height: 38px; margin-top: 14px; }
 .mock-note { position: absolute; left: 0; top: 0; font-size: 26px; font-weight: 800; white-space: nowrap; }
 .mock-note.bad { color: var(--red); }
-.mock-note.good { color: #2f8f5b; }
-.foreign .mock-note.bad { background: #fde9dc; padding-right: 12px; }
+.mock-note.good { color: #2f8f5b; transition: opacity .55s ease; }
+/* Коли з'являється «Помилок стільки ж», напис «Виглядає бездоганно» під ним зникає */
+.mock-note.good:has(+ .mock-note.bad.shown) { opacity: 0; }
 
 /* Значки: тонкі лінії; значок у кроці «малюється», коли крок з'являється (клас draw-on ставить fx.js) */
 .ico, .ico-s { fill: none; stroke: var(--accent); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
@@ -698,17 +699,17 @@ code { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-we
   /* Картки, що ще не з'явилися за ↓, на наведення не реагують */
   [data-step]:not(.shown) { pointer-events: none; }
   :is(.card, .rv-card, .expbox, .hr-card, .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
-      .dr-card, .ctx-card, .c2d-node, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile, .h-tile) {
+      .dr-card, .ctx-card, .c2d-node, .vs .side, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile, .h-tile) {
     transition: opacity .55s ease, transform .55s var(--ease), translate .25s ease, scale .25s ease,
                 background-color .25s ease, border-color .25s ease, box-shadow .25s ease;
   }
   :is(.card, .rv-card, .expbox, .hr-card, .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
-      .dr-card, .ctx-card, .c2d-node, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile):hover {
+      .dr-card, .ctx-card, .c2d-node, .vs .side, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile):hover {
     translate: 0 var(--hover-lift); scale: var(--hover-grow); z-index: 1;
   }
   /* Світлі картки: фон стає білим, з'являється тінь; верхня смуга лишається */
   :is(.card, .expbox, .hr-card:not(.ai), .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
-      .dr-card, .ctx-card, .c2d-node, .sum-card, .tile):hover {
+      .dr-card, .ctx-card, .c2d-node, .vs .side, .sum-card, .tile):hover {
     background-color: #fff; box-shadow: 0 18px 40px rgba(14, 36, 64, .16);
   }
   /* Темно-сині картки світлішають; пунктирна «наступна революція» стає яскравішою */
