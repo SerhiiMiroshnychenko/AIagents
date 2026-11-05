@@ -700,12 +700,12 @@ code { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-we
   /* Картки, що ще не з'явилися за ↓, на наведення не реагують */
   [data-step]:not(.shown) { pointer-events: none; }
   :is(.card, .rv-card, .expbox, .hr-card, .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
-      .dr-card, .ctx-card, .c2d-node, .vs .side, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile, .h-tile) {
+      .dr-card, .ctx-card, .c2d-node, .vs .side, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile, .vibe .vi, .h-tile) {
     transition: opacity .55s ease, transform .55s var(--ease), translate .25s ease, scale .25s ease,
                 background-color .25s ease, border-color .25s ease, box-shadow .25s ease;
   }
   :is(.card, .rv-card, .expbox, .hr-card, .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
-      .dr-card, .ctx-card, .c2d-node, .vs .side, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile):hover {
+      .dr-card, .ctx-card, .c2d-node, .vs .side, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile, .vibe .vi):hover {
     translate: 0 var(--hover-lift); scale: var(--hover-grow); z-index: 1;
   }
   /* Світлі картки: фон стає білим, з'являється тінь; верхня смуга лишається */
@@ -721,6 +721,8 @@ code { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-we
   .tk-fix:hover { background-color: rgba(242, 107, 33, .3); border-color: var(--accent); box-shadow: 0 18px 40px rgba(0, 0, 0, .3); }
   /* Плитки обв'язки: лише колір і тінь, без руху */
   .h-tile:hover { background-color: #fff4ec; box-shadow: 0 12px 28px rgba(14, 36, 64, .14); }
+  /* Мем: фон блока лишається — він такого ж кольору, як тло малюнків; блок лише піднімається й відкидає тінь */
+  .vibe .vi:hover { box-shadow: 0 18px 40px rgba(14, 36, 64, .16); }
   /* Рядки таблиці команд: як світлі картки — рядок піднімається, клітинки біліють, з'являється тінь */
   .table.cmd tr[data-step] { transition: opacity .55s ease, transform .55s var(--ease), translate .25s ease, scale .25s ease, box-shadow .25s ease; }
   .table.cmd tr[data-step] td { transition: background-color .25s ease; }
