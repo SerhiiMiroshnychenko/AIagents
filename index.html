@@ -427,7 +427,7 @@
         <g class="loop chat" data-step="1" data-anim="fade">
           <text class="hdr" x="420" y="44" text-anchor="middle">Чат</text>
           <circle class="ring" cx="420" cy="320" r="175"/>
-          <circle class="dot" cx="420" cy="145" r="3" data-lap="6"/>
+          <circle class="dot" cx="420" cy="145" r="6" data-lap="6"/>
           <g class="node h"><rect x="270" y="103" width="300" height="84" rx="14"/><text x="420" y="153" text-anchor="middle">Ви пишете запит</text></g>
           <g class="node m"><rect x="445" y="278" width="300" height="84" rx="14"/><text text-anchor="middle"><tspan x="595" y="314">Модель відповідає</tspan><tspan x="595" y="340">кодом</tspan></text></g>
           <g class="node h"><rect x="270" y="453" width="300" height="84" rx="14"/><text x="420" y="503" text-anchor="middle">Ви запускаєте код</text></g>
@@ -438,15 +438,16 @@
         <g class="loop agent" data-step="2" data-anim="fade">
           <text class="hdr" x="1200" y="44" text-anchor="middle">Агентне середовище</text>
           <circle class="ring" cx="1200" cy="320" r="175"/>
-          <circle class="dot" cx="1200" cy="145" r="3" data-lap="3"/>
+          <circle class="dot" cx="1200" cy="145" r="6" data-lap="3"/>
+          <!-- Лінії від «Ви: …» лежать під блоками й заходять під них, тож за будь-якого розміру блока доходять рівно до його краю -->
+          <path class="link" d="M1414 102 L1327 144"/>
+          <path class="link" d="M1327 496 L1414 538"/>
           <g class="node m"><rect x="1050" y="103" width="300" height="84" rx="14"/><text x="1200" y="153" text-anchor="middle">План</text></g>
           <g class="node m"><rect x="1225" y="278" width="300" height="84" rx="14"/><text text-anchor="middle"><tspan x="1375" y="314">Пише й запускає</tspan><tspan x="1375" y="340">код</tspan></text></g>
           <g class="node m"><rect x="1050" y="453" width="300" height="84" rx="14"/><text x="1200" y="503" text-anchor="middle">Бачить результат</text></g>
           <g class="node m"><rect x="875" y="278" width="300" height="84" rx="14"/><text x="1025" y="328" text-anchor="middle">Виправляє</text></g>
           <g class="node h small"><rect x="1385" y="66" width="230" height="74" rx="14"/><text text-anchor="middle"><tspan x="1500" y="97">Ви: задача</tspan><tspan x="1500" y="122">і критерії</tspan></text></g>
-          <path class="link" d="M1385 116 L1356 130"/>
           <g class="node h small"><rect x="1385" y="500" width="230" height="74" rx="14"/><text text-anchor="middle"><tspan x="1500" y="531">Ви: перевіряєте</tspan><tspan x="1500" y="556">результат</tspan></text></g>
-          <path class="link" d="M1356 510 L1385 524"/>
           <text class="cap" x="1200" y="600" text-anchor="middle">Ви — на вході й на виході</text>
           <text class="dif" x="1200" y="650" text-anchor="middle">Працює в теці проєкту · результат — скрипти й звіти</text>
         </g>

@@ -344,11 +344,12 @@ b, strong { font-weight: 800; color: var(--ink); }
 .loops .node.m rect { fill: var(--navy); }
 .loops .node.small text { font-size: 21px; }
 .loops .link { stroke: var(--accent); stroke-width: 4; }
-/* Крапка завтовшки з кільце біжить під блоками (fx.js); блок, під яким вона йде, світлішає, а довкола нього сяйво */
-.loops .dot { fill: var(--ink); }
-.loops .node rect, .loops .glows rect { transition: fill .15s, opacity .15s; }
-.loops .node.m.lit rect { fill: #2f6fae; }
-.loops .node.h.lit rect { fill: #ff8a3d; }
+/* Помаранчева крапка біжить по кільцю під блоками (fx.js); блок, під яким вона йде, трохи збільшується, а довкола нього сяйво. Колір блока не змінюється */
+.loops .dot { fill: var(--accent); }
+.loops .glows rect { transition: opacity .15s, transform .2s ease; }
+.loops .node { transition: transform .2s ease; }
+.loops .node, .loops .glows rect { transform-box: fill-box; transform-origin: center; }
+.loops .node.lit, .loops .glows .lit { transform: scale(1.08); }
 .loops .glows { filter: url(#loop-glow); }
 .loops .glows rect { opacity: 0; }
 .loops .glows .m { fill: #5a9ee0; }
