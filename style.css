@@ -118,7 +118,8 @@ b, strong { font-weight: 800; color: var(--ink); }
 .card .big.mid { font-size: 60px; }
 /* Швидкість: чотири цифри — 2×2 на весь слайд */
 .speed { grid-template-columns: 1fr 1fr; gap: 30px 40px; }
-.speed .card { padding: 26px 40px; }
+.speed .card { position: relative; padding: 22px 40px; }
+.speed .card-src { position: absolute; top: 34px; right: 40px; font-size: 18px; font-weight: 600; color: #8a97a8; }
 .speed .card .big, .speed .card .big.mid { font-size: 76px; margin-bottom: 10px; }
 .speed .card p { font-size: 29px; }
 .card p { font-size: 27px; line-height: 1.4; font-weight: 500; }
@@ -459,6 +460,17 @@ b, strong { font-weight: 800; color: var(--ink); }
 .sign { position: absolute; right: 26px; bottom: 8px; width: 280px; height: 84px; fill: none; stroke: var(--navy); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
 .sign path { stroke-dasharray: 1000; stroke-dashoffset: 1000; transition: stroke-dashoffset 1.8s ease .6s; }
 .callout.shown .sign path { stroke-dashoffset: 0; }
+
+/* Чотири рівні зрілості: сходинки ростуть зліва направо, позначки «де ми зараз» — над сходинками */
+.lvl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: end; height: 610px; }
+.lvl-step { position: relative; height: var(--h); display: flex; flex-direction: column; gap: 10px; padding: 26px 28px; background: var(--soft); border-top: 7px solid #9fb6d3; border-radius: 8px; }
+.lvl-step.on { border-top-color: var(--accent); }
+.lvl-step .lvl-n { font-size: 20px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.lvl-step b { font-size: 32px; line-height: 1.2; font-weight: 800; color: var(--ink); }
+.lvl-step span:not(.lvl-n) { font-size: 24px; line-height: 1.4; color: var(--text); }
+.lvl-step i { margin-top: auto; font-style: normal; font-size: 26px; font-weight: 800; color: var(--accent); }
+.lvl-mark { position: absolute; left: 0; bottom: calc(100% + 14px); font-style: normal; font-size: 20px; font-weight: 700; color: #fff; background: var(--navy); padding: 6px 14px; border-radius: 6px; white-space: nowrap; }
+.lvl-mark.hot { background: var(--accent); }
 
 /* Мем «Результати використання ШІ-агентів»: таблиця 2×2, літаки з'являються по одному; тло комірки — як тло рисунків */
 .vibe { display: grid; grid-template-columns: 340px 1fr 1fr; grid-template-rows: 60px 1fr 1fr; gap: 16px 24px; height: 720px; }

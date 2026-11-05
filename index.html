@@ -154,15 +154,16 @@
   <div class="title">Як швидко розвивається ШІ</div>
   <div class="rule"></div>
   <div class="grid4 speed">
-    <div class="card" data-step="1"><svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><div class="big">×<span data-count="4.7" data-from="1" data-dec="1">4,7</span></div><p>на рік зростають обчислення на навчання найбільших моделей — ≈10<sup>7</sup> разів за десятиліття</p></div>
-    <div class="card" data-step="2"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><div class="big mid">2 → <span data-count="12" data-from="2">12</span> год</div><p>за пів року: довжина програмістських задач (за часом фахівця), які модель виконує в половині спроб — METR</p></div>
-    <div class="card" data-step="3"><svg class="ico" viewBox="0 0 24 24"><path d="M2 9.5L12 4.5l10 5-10 5z"/><path d="M6 11.5v5c3.5 2.5 8.5 2.5 12 0v-5"/><path d="M22 9.5v6"/></svg><div class="big"><span data-count="1.5" data-dec="1">1,5</span> року</div><p>на питаннях рівня PhD: від вгадування до рівня, вищого за експертів</p></div>
-    <div class="card" data-step="4"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="M8.5 3l2.5 6.3M15.5 3L13 9.3"/><path d="M12 12.3l.85 1.75 1.9.27-1.38 1.34.33 1.9L12 16.65l-1.7.9.33-1.9-1.38-1.34 1.9-.27z"/></svg><div class="big"><span data-count="2025" data-from="2015">2025</span></div><p>«золото» на Міжнародній математичній олімпіаді</p></div>
+    <div class="card" data-step="1"><span class="card-src">Epoch AI</span><svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><div class="big">×4–5</div><p>на рік зростають обчислення на навчання найбільших моделей — ≈10<sup>7</sup> разів за десятиліття</p></div>
+    <div class="card" data-step="2"><span class="card-src">METR</span><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><div class="big mid">≈3 → <span data-count="12" data-from="3">12</span> год</div><p>за пів року: довжина програмістських задач (за часом фахівця), які модель виконує в половині спроб</p></div>
+    <div class="card" data-step="3"><span class="card-src">бенчмарк GPQA Diamond · Epoch AI</span><svg class="ico" viewBox="0 0 24 24"><path d="M2 9.5L12 4.5l10 5-10 5z"/><path d="M6 11.5v5c3.5 2.5 8.5 2.5 12 0v-5"/><path d="M22 9.5v6"/></svg><div class="big"><span data-count="1.5" data-dec="1">1,5</span> року</div><p>на питаннях рівня PhD: від вгадування до рівня, вищого за експертів</p></div>
+    <div class="card" data-step="4"><span class="card-src">Google DeepMind, OpenAI · IMO 2025</span><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="M8.5 3l2.5 6.3M15.5 3L13 9.3"/><path d="M12 12.3l.85 1.75 1.9.27-1.38 1.34.33 1.9L12 16.65l-1.7.9.33-1.9-1.38-1.34 1.9-.27z"/></svg><div class="big"><span data-count="2025" data-from="2015">2025</span></div><p>«золото» на Міжнародній математичній олімпіаді</p></div>
   </div>
   <div class="notes">
     <p>Почнімо зі швидкості: доповідач наводить чотири цифри.</p>
     <p data-step="2" data-anim="fade">METR — незалежна дослідницька організація: міряє, наскільки довгі задачі моделі виконують самостійно.</p>
     <p data-step="4" data-anim="fade">Задачі олімпіади щороку нові, тож завчити відповіді неможливо.</p>
+    <p class="src">Цифри — з виступу J. Sohl-Dickstein, ICLR 2026</p>
   </div>
   <img class="logo" src="images/logo-mip.svg" alt="">
 </section>
@@ -325,6 +326,25 @@
     <p data-step="2" data-anim="fade">Лінія тренду в Excel — це вже машинне навчання.</p>
     <p data-step="4" data-anim="fade">LLM не шукає відповідь у базі знань, а складає правдоподібне продовження тексту — тому може впевнено помилятися.</p>
     <p data-step="7" data-anim="fade">ML обчислює, LLM пояснює, агент організовує, тести перевіряють, інженер приймає.</p>
+  </div>
+  <img class="logo" src="images/logo-mip.svg" alt="">
+</section>
+
+<!-- Чотири рівні зрілості впровадження ШІ: сходинки з'являються по одній, останнім кроком — де ми зараз.
+     За відео «AI в технологічних компаніях: реальний стан, страхи і прогнози десяти CTO зі США та Європи» (канал «Flow»), 05:40 -->
+<section class="slide" id="s-levels">
+  <div class="label">Агентні середовища</div>
+  <div class="title">Чотири рівні зрілості впровадження ШІ</div>
+  <div class="rule"></div>
+  <div class="lvl">
+    <div class="lvl-step" data-step="1" style="--h:300px"><span class="lvl-n">Рівень 1</span><b>Чат-боти</b><span>взаємодія з чат-ботами вручну</span><em class="lvl-mark" data-step="5" data-anim="fade">більшість зараз тут</em></div>
+    <div class="lvl-step" data-step="2" style="--h:380px"><span class="lvl-n">Рівень 2</span><b>Помічник у коді</b><span>інструменти на кшталт GitHub Copilot</span></div>
+    <div class="lvl-step on" data-step="3" style="--h:460px"><span class="lvl-n">Рівень 3</span><b>Агентні робочі процеси</b><span>агенти самі створюють артефакти, людина перевіряє й затверджує</span><i>≈2–3× продуктивності</i><em class="lvl-mark hot" data-step="5" data-anim="fade">сьогодні на практиці</em></div>
+    <div class="lvl-step" data-step="4" style="--h:540px"><span class="lvl-n">Рівень 4</span><b>Фабрика ШІ-⁠агентів</b><span>автономні агенти; поки що мета або досвід лідерів ринку</span><i>обіцяють 10–20×</i></div>
+  </div>
+  <div class="notes">
+    <p data-step="3" data-anim="fade">Продуктивність — оцінки CTO, а не вимірювання.</p>
+    <p class="src">Джерело: «AI в технологічних компаніях: реальний стан, страхи і прогнози десяти CTO зі США та Європи», YouTube-канал «Flow: про книги, бізнес та ідеї», 05:40</p>
   </div>
   <img class="logo" src="images/logo-mip.svg" alt="">
 </section>
@@ -531,7 +551,7 @@
       <div class="ctx-tools" data-step="4"><span><b>Стиснення</b>історія → короткий підсумок</span><span><b>Файли</b>вимоги й результати поза розмовою: стиснення їх не зітре</span><span><b>Окрема сесія</b>чистий контекст, як у рецензента</span></div>
     </div>
   </div>
-  <div class="callout" data-step="5" style="margin-top:26px;">Промпт — що сказати. Контекст — усе, що модель бачить. Тому вимоги тримаємо у файлах, а не в розмові.</div>
+  <div class="callout" data-step="5" style="margin-top:26px;">Промпт — що сказати. Контекст — усе, що модель бачить.<br>Тому вимоги тримаємо у файлах, а не в розмові.</div>
   <div class="notes">
     <p>Промпт — що ми кажемо моделі, контекст — усе, що вона бачить на кожному кроці.</p>
     <p data-step="3" data-anim="fade">Вікно саме переповнюється, а стиснення згортає історію в короткий підсумок — що туди потрапить, вирішує модель.</p>
@@ -581,7 +601,7 @@
     <i class="c2d-arr" style="--k:2"></i>
     <div class="c2d-node ag" style="--k:3"><b>Агент</b>працює з результатом</div>
   </div>
-  <div class="callout" data-step="3" style="margin-top:44px; font-size:30px; padding:22px 34px;">Дані захищає архітектура, а не прохання до агента. Агентові — копії даних, а не доступ до систем керування. Передати результат у систему керування — окремий проєкт інженерів з перевіркою й затвердженням.</div>
+  <div class="callout" data-step="3" style="margin-top:44px; font-size:30px; padding:22px 34px;">Дані захищає архітектура, а не прохання до агента.<br>Агентові — копії даних, а не доступ до систем керування.<br>Передати результат у систему керування — окремий проєкт інженерів з перевіркою й затвердженням.</div>
   <div class="notes">
     <p data-step="2" data-anim="fade">На практиці побачите, як агент отримає відмову, коли спробує відкрити сирий файл.</p>
   </div>
@@ -606,7 +626,7 @@
       <div class="mock-notes"><div class="mock-note good">✓ Виглядає бездоганно</div><div class="mock-note bad" data-step="2" data-anim="fade">✗ Помилок стільки ж — ви їх не бачили</div></div>
     </div>
   </div>
-  <div class="callout" data-step="3" style="margin-top:26px;">ШІ не стає розумнішим, коли змінюється тема. Ви просто втрачаєте здатність помітити помилку.</div>
+  <div class="callout" data-step="3" style="margin-top:26px;">ШІ не стає розумнішим, коли змінюється тема.<br>Ви просто втрачаєте здатність помітити помилку.</div>
   <ul class="bars compact" style="margin-top:28px;">
     <li data-step="4"><b>Хто не програмує</b> — побачить в агентові «геніального програміста»</li>
     <li data-step="5"><b>Програмісти</b> — помітять огріхи в коді, але повірять агентові в метеорології, статистиці чи металургії</li>
@@ -631,7 +651,7 @@
     <div class="card check" data-step="4"><svg class="ico" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></svg><h3>Окремий рецензент</h3><p>окрема сесія з іншою роллю</p></div>
     <div class="card check" data-step="5"><svg class="ico" viewBox="0 0 24 24"><path d="M4 3v17h17"/><path d="M7.5 15l4-4.5 3 3L20 7"/></svg><h3>Візуалізація</h3><p>подивитися на сирі дані</p></div>
   </div>
-  <div class="callout" data-step="6" style="margin-top:56px;">Саме з цих перевірок складається метод, який ми пройдемо на практиці. Навіть якщо ви не фахівець — є способи перевірити.</div>
+  <div class="callout" data-step="6" style="margin-top:56px;">Саме з цих перевірок складається метод, який ми пройдемо на практиці.<br>Навіть якщо ви не фахівець — є способи перевірити.</div>
   <div class="caveat" data-step="7"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.3"/></svg>Окремий рецензент — це рецензія, а не доказ: моделі можуть помилятися однаково. Доказ дають перевірки, незалежні від моделі.</div>
   <div class="notes">
     <p>Бути експертом у кожній галузі неможливо, тож покладаємося не на власну проникливість, а на незалежні перевірки.</p>
