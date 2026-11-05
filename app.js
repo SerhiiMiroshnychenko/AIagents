@@ -1,6 +1,6 @@
 /*
  * Керування презентацією:
- *   ↓ — наступний крок (коли слайд заповнено, він відлітає вгору і з'являється наступний);
+ *   ↓ або пробіл — наступний крок (коли слайд заповнено, він відлітає вгору і з'являється наступний);
  *   ↑ — крок назад;
  *   F — повний екран.
  * Позиція зберігається в адресі (#слайд.крок), тож після перезавантаження сторінки показ продовжується з того самого місця.
@@ -116,7 +116,7 @@
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowDown' || e.code === 'Space') { e.preventDefault(); next(); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); prev(); }
     else if (e.code === 'KeyF') {
       if (document.fullscreenElement) document.exitFullscreen();
