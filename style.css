@@ -221,6 +221,8 @@ b, strong { font-weight: 800; color: var(--ink); }
 
 /* ---------- Питання для обговорення ---------- */
 .question { font-size: 84px; line-height: 1.15; font-weight: 800; color: var(--ink); max-width: 1600px; margin-top: 30px; }
+/* Виділене слово плавно стає помаранчевим і назад — як «Питання?» на останньому слайді */
+.question em { font-style: normal; animation: breathe 5s ease-in-out infinite; }
 
 /* ---------- Виступ Sohl-Dickstein: лінійне продовження проти експоненти ---------- */
 /* Слайд 4: картки лягають стосом — нова зверху, попередні відступають назад, і з них видно лише ярлик (глибину ставить fx.js у data-depth).

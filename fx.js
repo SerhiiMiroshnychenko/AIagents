@@ -155,9 +155,9 @@
     window.addEventListener('resize', () => net.resize());
   });
 
-  // ---------- Текст, що з'являється слово за словом ----------
+  // ---------- Текст, що з'являється слово за словом (виділення <em> без атрибутів лишається в слові) ----------
   $$('.words').forEach((el) => {
-    el.innerHTML = el.textContent.trim().split(/\s+/).map((w, i) => `<span class="w" style="--k:${i}">${w}</span>`).join(' ');
+    el.innerHTML = el.innerHTML.trim().split(/\s+/).map((w, i) => `<span class="w" style="--k:${i}">${w}</span>`).join(' ');
     el.closest('.slide').addEventListener('enter', () => {
       el.classList.remove('play');
       void el.offsetWidth;
