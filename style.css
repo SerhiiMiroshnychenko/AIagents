@@ -689,3 +689,38 @@ code { font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace; font-we
 .c2d.shown .c2d-arr::before { background: linear-gradient(90deg, #c7d4e5 0 40%, var(--accent) 40% 60%, #c7d4e5 60%) 0 0 / 300% 100%; animation: c2d-flow 1.6s linear infinite; animation-delay: calc(var(--k) * .5s); }
 @keyframes c2d-flow { from { background-position: 100% 0; } to { background-position: 0 0; } }
 .c2d.shown > .c2d-node, .c2d.shown > .c2d-zone { animation: tile-in .45s var(--ease) both; animation-delay: calc(.15s + var(--k) * .35s); }
+
+/* ---------- Наведення мишею на картки: картка піднімається, трохи збільшується й виходить уперед ---------- */
+/* Лише для пристроїв із мишею. Рух — через translate і scale: вони окремі від transform, тож анімації появи не зачеплено.
+   Плитки обв'язки з'єднані лініями з колом, тому їх лише підсвічуємо, без руху. */
+@media (hover: hover) {
+  :root { --hover-lift: -6px; --hover-grow: 1.02; }
+  /* Картки, що ще не з'явилися за ↓, на наведення не реагують */
+  [data-step]:not(.shown) { pointer-events: none; }
+  :is(.card, .rv-card, .expbox, .hr-card, .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
+      .dr-card, .ctx-card, .c2d-node, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile, .h-tile) {
+    transition: opacity .55s ease, transform .55s var(--ease), translate .25s ease, scale .25s ease,
+                background-color .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  :is(.card, .rv-card, .expbox, .hr-card, .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
+      .dr-card, .ctx-card, .c2d-node, .tk-card, .tk-lim, .tk-fix, .tk-gain, .r-steps span, .sum-card, .tile):hover {
+    translate: 0 var(--hover-lift); scale: var(--hover-grow); z-index: 1;
+  }
+  /* Світлі картки: фон стає білим, з'являється тінь; верхня смуга лишається */
+  :is(.card, .expbox, .hr-card:not(.ai), .hr-resp, .lvl-step, .env-common > div, .fl-step, .fl-exits > div,
+      .dr-card, .ctx-card, .c2d-node, .sum-card, .tile):hover {
+    background-color: #fff; box-shadow: 0 18px 40px rgba(14, 36, 64, .16);
+  }
+  /* Темно-сині картки світлішають; пунктирна «наступна революція» стає яскравішою */
+  :is(.rv-card, .hr-card.ai):hover { background-color: #245a8c; box-shadow: 0 18px 40px rgba(14, 36, 64, .3); }
+  .rv-col.next .rv-card:hover { background-color: rgba(242, 107, 33, .2); box-shadow: 0 18px 40px rgba(242, 107, 33, .2); }
+  /* Темні слайди практики: картка стає світлішою */
+  :is(.tk-card, .tk-lim, .tk-gain, .r-steps span):hover { background-color: rgba(255, 255, 255, .16); border-color: rgba(255, 255, 255, .36); box-shadow: 0 18px 40px rgba(0, 0, 0, .3); }
+  .tk-fix:hover { background-color: rgba(242, 107, 33, .3); border-color: var(--accent); box-shadow: 0 18px 40px rgba(0, 0, 0, .3); }
+  /* Плитки обв'язки: лише колір і тінь, без руху */
+  .h-tile:hover { background-color: #fff4ec; box-shadow: 0 12px 28px rgba(14, 36, 64, .14); }
+}
+/* «Менше руху» в системі: лишається тільки зміна кольору */
+@media (prefers-reduced-motion: reduce) {
+  :root { --hover-lift: 0px; --hover-grow: 1; }
+}
